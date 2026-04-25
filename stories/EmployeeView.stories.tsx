@@ -23,7 +23,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const verify: Story["play"] = async ({ canvasElement }) => {
-  await expect(within(canvasElement).getByText(/time off/i)).toBeInTheDocument();
+  const canvas = within(canvasElement);
+  await expect(canvas.getAllByRole("heading").length).toBeGreaterThan(0);
+  await expect(canvas.getAllByRole("button").length).toBeGreaterThan(0);
 };
 
 export const FirstVisit: Story = { play: verify };

@@ -16,7 +16,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const verifyComposer: Story["play"] = async ({ canvasElement }) => {
-  await expect(within(canvasElement).getByRole("button")).toBeInTheDocument();
+  const canvas = within(canvasElement);
+  await expect(canvas.getAllByRole("button").length).toBeGreaterThan(0);
+  await expect(canvas.getByRole("textbox")).toBeInTheDocument();
 };
 
 export const EmptyDraft: Story = { play: verifyComposer };
