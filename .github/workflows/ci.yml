@@ -213,13 +213,11 @@ jobs:
     needs: storybook
     if: |
       (
-        (github.event_name == 'push' || github.event_name == 'pull_request') &&
-        secrets.CHROMATIC_PROJECT_TOKEN != ''
+        github.event_name == 'push' || github.event_name == 'pull_request'
       ) ||
       (
         github.event_name == 'workflow_dispatch' &&
-        github.event.inputs.run_chromatic == 'true' &&
-        secrets.CHROMATIC_PROJECT_TOKEN != ''
+        github.event.inputs.run_chromatic == 'true'
       )
     steps:
       - uses: actions/checkout@v4
@@ -233,4 +231,5 @@ jobs:
         run: npm ci
 
       - name: Run Chromatic
+        if: ${{ secrets.CHROMATIC_PROJECT_TOKEN != '' }}
         run: npx chromatic --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
