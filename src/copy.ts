@@ -36,6 +36,7 @@ export const nav = {
   switchToManager: "Switch to Manager",
   switchToEmployee: "Switch to Employee",
   statesReference: "States Reference",
+  mockControls: "Mock Controls",
   approvals: (count: number) =>
     count > 0 ? `Approvals (${count})` : "Approvals",
   team: "Team",

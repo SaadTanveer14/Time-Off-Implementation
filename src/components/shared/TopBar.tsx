@@ -33,7 +33,27 @@ export function TopBar({
       <div className="mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 h-[72px] flex items-center justify-between">
         {/* Logo cluster */}
         <div className="flex items-center gap-3">
-          <div className="h-5 w-8 rounded bg-violet-600" aria-hidden />
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 40 40"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="shrink-0"
+          >
+            <defs>
+              <linearGradient id="tbGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#7C3AED" />
+                <stop offset="100%" stopColor="#4C1D95" />
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="40" height="40" rx="11" fill={isManager ? "#7C3AED" : "url(#tbGrad)"} />
+            <rect x="11" y="11" width="4"  height="20" rx="1.75" fill="white" />
+            <rect x="11" y="11" width="17" height="4"  rx="1.75" fill="white" />
+            <rect x="11" y="19.25" width="13" height="4" rx="1.75" fill="white" />
+            <rect x="11" y="27.5" width="19" height="4"  rx="1.75" fill="white" />
+            <circle cx="32" cy="13" r="2" fill="#F59E0B" />
+          </svg>
           <span
             className={cn(
               "text-base font-bold",
@@ -65,6 +85,9 @@ export function TopBar({
               <NavLink href="#" variant="manager">
                 {nav.reports}
               </NavLink>
+              <NavLink href="/time-off/mock-controls" variant="manager">
+                {nav.mockControls}
+              </NavLink>
               <NavLink href="/time-off" variant="manager">
                 {nav.switchToEmployee}
               </NavLink>
@@ -78,6 +101,7 @@ export function TopBar({
               <NavLink href="#">{nav.profile}</NavLink>
               <NavLink href="/time-off/manager">{nav.switchToManager}</NavLink>
               <NavLink href="/time-off/states">{nav.statesReference}</NavLink>
+              <NavLink href="/time-off/mock-controls">{nav.mockControls}</NavLink>
             </>
           )}
         </nav>

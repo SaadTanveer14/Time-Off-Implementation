@@ -5,6 +5,7 @@ import { MockAuthProvider } from "@/hooks/useAuth";
 import { AuthGate } from "@/components/shared/AuthGate";
 import { GlobalBanner } from "@/components/shared/GlobalBanner";
 import { NotificationLayer } from "@/components/shared/NotificationLayer";
+import { PageLoader } from "@/components/shared/PageLoader";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen bg-[#FAFAF7] text-[#0F0B1E]">
+        <PageLoader />
         <Providers>
           <MockAuthProvider>
             <AuthGate>
