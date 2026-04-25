@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { cn, businessDays, formatDateRange } from "@/lib/utils";
-import type { LocationId, TimeOffRequest } from "@/lib/types";
+import type { LocationId } from "@/lib/types";
+import { composer as copy, daysLabel } from "@/copy";
 import { locations } from "@/mocks/data";
 
 interface RequestComposerProps {
@@ -44,19 +45,19 @@ export function RequestComposer({
     <section className="rounded-3xl bg-white border border-zinc-200 p-8 shadow-[0_8px_16px_rgba(15,11,30,0.06)]">
       <header className="mb-6">
         <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-violet-600">
-          New request
+          {copy.sectionEyebrow}
         </p>
         <h2 className="mt-1 text-2xl font-bold tracking-tight text-[#0F0B1E]">
-          Plan your time off.
+          {copy.sectionTitle}
         </h2>
         <p className="mt-1 text-sm text-zinc-500">
-          Three quick fields. The validator stays live.
+          {copy.sectionSubtitle}
         </p>
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         {/* Location */}
-        <Field label="Location">
+        <Field label={copy.fieldLocation}>
           <div className="grid grid-cols-3 gap-2">
             {locations.map((loc) => {
               const active = locationId === loc.id;
@@ -86,7 +87,7 @@ export function RequestComposer({
                       active ? "text-violet-700" : "text-zinc-500",
                     )}
                   >
-                    {availableByLocation[loc.id] ?? 0} avail.
+                    {availableByLocation[loc.id] ?? 0} {copy.locationAvailSuffix}
                   </div>
                 </button>
               );
@@ -96,7 +97,7 @@ export function RequestComposer({
 
         {/* Dates */}
         <div className="grid grid-cols-2 gap-3">
-          <Field label="From">
+          <Field label={copy.fieldFrom}>
             <input
               type="date"
               value={startDate}
@@ -104,7 +105,7 @@ export function RequestComposer({
               className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-[#0F0B1E] focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200"
             />
           </Field>
-          <Field label="To">
+          <Field label={copy.fieldTo}>
             <input
               type="date"
               value={endDate}
@@ -118,29 +119,29 @@ export function RequestComposer({
         {/* Day count + validator */}
         <div className="flex items-center gap-2 flex-wrap">
           <span className="rounded-full bg-violet-100 px-4 py-1.5 text-xs font-bold text-violet-800">
-            {days} day{days !== 1 ? "s" : ""}
+            {daysLabel(days)}
           </span>
           {days === 0 ? (
             <span className="rounded-full bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-600">
-              Pick a date range
+              {copy.pickDateRange}
             </span>
           ) : sufficient ? (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-800">
-              <CheckIcon /> Balance is sufficient · {available - days} left
+              <CheckIcon /> {copy.sufficientChip(available - days)}
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-100 px-4 py-1.5 text-xs font-semibold text-rose-800">
-              <span aria-hidden>⚠</span> Short by {days - available} day{days - available !== 1 ? "s" : ""}
+              <span aria-hidden>⚠</span> {copy.shortBy(days - available)}
             </span>
           )}
         </div>
 
         {/* Note */}
-        <Field label="Note (optional)">
+        <Field label={copy.fieldNote}>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            placeholder="A short explanation for your manager…"
+            placeholder={copy.notePlaceholder}
             rows={2}
             className="w-full resize-none rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-[#0F0B1E] placeholder:text-zinc-400 focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200"
           />
@@ -157,8 +158,8 @@ export function RequestComposer({
               : "bg-zinc-100 text-zinc-400 cursor-not-allowed",
           )}
         >
-          Submit request
-          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">→</span>
+          {copy.submit}
+          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">{copy.submitArrow}</span>
         </button>
       </form>
     </section>

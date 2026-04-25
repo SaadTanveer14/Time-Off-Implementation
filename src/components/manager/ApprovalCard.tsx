@@ -2,6 +2,7 @@
 
 import { cn, formatDateRange, relativeTime } from "@/lib/utils";
 import type { PendingApproval } from "@/lib/types";
+import { approvalCard as copy, businessDaysLabel } from "@/copy";
 
 interface ApprovalCardProps {
   request: PendingApproval;
@@ -28,10 +29,10 @@ export function ApprovalCard({
         <div className="flex items-center gap-2 mb-4">
           <div className="h-3 w-3 rounded-full bg-amber-500" />
           <span className="text-[11px] font-bold uppercase tracking-[1px] text-amber-800">
-            Pending · Oldest in queue
+            {copy.oldestInQueue}
           </span>
           <span className="text-xs text-zinc-400">
-            · submitted {relativeTime(request.submittedAt)}
+            {copy.submittedPrefix} {relativeTime(request.submittedAt)}
           </span>
         </div>
       )}
@@ -54,7 +55,7 @@ export function ApprovalCard({
             {request.employeeName}
           </h3>
           <p className="text-sm text-zinc-500">
-            {request.employeeRole} · Reports to you
+            {request.employeeRole} · {copy.reportsToYou}
           </p>
         </div>
       </div>
@@ -62,14 +63,13 @@ export function ApprovalCard({
       {/* Date hero */}
       <div className="mt-8">
         <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-violet-600">
-          Requested dates
+          {copy.requestedDatesEyebrow}
         </p>
         <p className="mt-2 text-[44px] font-extrabold tracking-[-1px] text-[#0F0B1E] leading-none">
           {formatDateRange(request.startDate, request.endDate)}
         </p>
         <p className="mt-2 text-sm font-medium text-zinc-600">
-          {request.days} business day{request.days !== 1 ? "s" : ""} ·{" "}
-          {request.locationName}
+          {businessDaysLabel(request.days)} · {request.locationName}
         </p>
       </div>
 
@@ -77,7 +77,7 @@ export function ApprovalCard({
       {request.note && (
         <div className="mt-6 rounded-2xl bg-[#FAFAF7] border border-zinc-200 p-4">
           <p className="text-[11px] font-bold uppercase tracking-[1px] text-zinc-500">
-            Employee note
+            {copy.employeeNoteEyebrow}
           </p>
           <p className="mt-2 text-sm italic text-zinc-700">"{request.note}"</p>
         </div>
@@ -127,7 +127,7 @@ export function ApprovalCard({
                 sufficient ? "text-emerald-800" : "text-rose-800",
               )}
             >
-              Fresh balance · read{" "}
+              {copy.freshBalanceEyebrow}{" "}
               {relativeTime(request.freshBalanceReadAt)}
             </p>
             <p
@@ -136,9 +136,11 @@ export function ApprovalCard({
                 sufficient ? "text-emerald-900" : "text-rose-900",
               )}
             >
-              {request.freshBalanceDays} days available → {willHave} after
-              approval{" "}
-              {sufficient ? "✓ Sufficient" : "⚠ Would overdraw"}
+              {copy.freshBalanceSummary(
+                request.freshBalanceDays,
+                willHave,
+                sufficient,
+              )}
             </p>
           </div>
         </div>
@@ -152,7 +154,7 @@ export function ApprovalCard({
           disabled={pending}
           className="rounded-full border-[1.5px] border-rose-600 bg-white px-8 py-3 text-sm font-semibold text-rose-600 transition-colors hover:bg-rose-50 disabled:opacity-50"
         >
-          Deny
+          {copy.deny}
         </button>
         <button
           type="button"
@@ -164,7 +166,7 @@ export function ApprovalCard({
         >
           {pending ? (
             <>
-              <Spinner /> Committing to HCM…
+              <Spinner /> {copy.committing}
             </>
           ) : (
             <>
@@ -180,12 +182,12 @@ export function ApprovalCard({
               >
                 <polyline points="2,8 6,12 14,3" />
               </svg>
-              Approve · commit
+              {copy.approve}
             </>
           )}
         </button>
         <p className="ml-2 text-xs text-zinc-500 hidden sm:block">
-          Approve commits to HCM immediately. No undo.
+          {copy.approveHint}
         </p>
       </div>
     </article>

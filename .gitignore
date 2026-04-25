@@ -54,3 +54,6 @@ Thumbs.db
 
 # Misc
 *.pem
+
+#claude
+CLAUDE.md

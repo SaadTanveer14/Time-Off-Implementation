@@ -7,6 +7,7 @@ import { QueueSidebar } from "./QueueSidebar";
 import { ConflictModal } from "./ConflictModal";
 import { currentManager, pendingApprovals as initialPending } from "@/mocks/data";
 import type { PendingApproval } from "@/lib/types";
+import { manager as copy, requestCountLabel } from "@/copy";
 
 type Filter = "pending" | "approved" | "denied";
 
@@ -99,16 +100,13 @@ export function ManagerView() {
         {/* Page header */}
         <header className="mb-8">
           <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
-            Manager · Approvals
+            {copy.pageEyebrow}
           </p>
           <h1 className="mt-2 text-[40px] sm:text-[52px] font-extrabold tracking-[-1.5px] text-[#0F0B1E] leading-[1.05]">
-            {counts.pending === 0
-              ? "All caught up."
-              : `${counts.pending} request${counts.pending !== 1 ? "s" : ""} need${counts.pending === 1 ? "s" : ""} your call.`}
+            {counts.pending === 0 ? copy.allCaughtUp : requestCountLabel(counts.pending)}
           </h1>
           <p className="mt-3 text-lg text-zinc-500">
-            Each action commits to HCM. The balance you see is read fresh just
-            for you.
+            {copy.subtitle}
           </p>
         </header>
 
@@ -120,7 +118,7 @@ export function ManagerView() {
             count={counts.pending}
             tone="amber"
           >
-            Pending
+            {copy.filterPending}
           </FilterChip>
           <FilterChip
             active={filter === "approved"}
@@ -128,7 +126,7 @@ export function ManagerView() {
             count={counts.approved}
             tone="emerald"
           >
-            Approved
+            {copy.filterApproved}
           </FilterChip>
           <FilterChip
             active={filter === "denied"}
@@ -136,12 +134,12 @@ export function ManagerView() {
             count={counts.denied}
             tone="rose"
           >
-            Denied
+            {copy.filterDenied}
           </FilterChip>
           <div className="ml-auto flex items-center gap-3">
-            <span className="text-xs font-medium text-zinc-500">Sort by</span>
+            <span className="text-xs font-medium text-zinc-500">{copy.sortBy}</span>
             <span className="rounded-full bg-zinc-50 border border-zinc-200 px-3 py-1.5 text-xs font-semibold text-[#0F0B1E]">
-              Submitted ↓
+              {copy.sortSubmitted}
             </span>
           </div>
         </div>
@@ -166,8 +164,8 @@ export function ManagerView() {
 
         {filter === "pending" && !selected && (
           <EmptyState
-            title="The queue is clear."
-            body="Nothing waiting on you. We'll notify you when a new request arrives."
+            title={copy.emptyQueueTitle}
+            body={copy.emptyQueueBody}
           />
         )}
 
@@ -180,8 +178,7 @@ export function ManagerView() {
 
         {/* Footer */}
         <footer className="mt-16 text-xs italic text-zinc-400">
-          Manager actions are pessimistic by design. See ADR-004 ·
-          Optimism-to-Reversibility.
+          {copy.footerNote}
         </footer>
       </main>
 
@@ -190,7 +187,7 @@ export function ManagerView() {
           request={conflict.request}
           staleBalance={conflict.staleBalance}
           liveBalance={conflict.liveBalance}
-          changeDetail="Maya K. approved Jordan L.'s Apr 29 request (1 day) · 2 min ago"
+          changeDetail={copy.demoChangeDetail}
           onApproveAnyway={() => commitApproval(conflict.request)}
           onDeny={handleDeny}
           onKeepPending={() => setConflict(null)}
@@ -259,8 +256,8 @@ function DecidedList({
   if (items.length === 0) {
     return (
       <EmptyState
-        title={`No ${outcome} requests yet`}
-        body={`Decisions you've made will show up here.`}
+        title={copy.decidedEmptyTitle(outcome)}
+        body={copy.decidedEmptyBody}
       />
     );
   }

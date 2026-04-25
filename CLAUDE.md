@@ -6,26 +6,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Development
-pnpm dev              # Next.js dev server with MSW-backed mock HCM
-pnpm build            # Production build
-pnpm lint             # ESLint
-pnpm typecheck        # tsc --noEmit
-pnpm analyze          # Bundle size report
+npm run dev              # Next.js dev server with MSW-backed mock HCM
+npm run build            # Production build
+npm run lint             # ESLint
+npm run typecheck        # tsc --noEmit
+npm run analyze          # Bundle size report
 
 # Tests
-pnpm test             # Unit + component (Vitest + React Testing Library)
-pnpm test:integration # Integration tests (with MSW)
-pnpm test:e2e         # Playwright E2E
-pnpm test:contract    # Zod schema contract tests
+npm test                        # Unit + component (Vitest + React Testing Library)
+npm run test:integration        # Integration tests (with MSW)
+npm run test:e2e                # Playwright E2E
+npm run test:contract           # Zod schema contract tests
+npm run test:coverage           # Tests with coverage report
 
 # Storybook
-pnpm storybook        # Run Storybook (full UX state catalog)
-pnpm test-storybook   # Storybook interaction tests (play functions)
-pnpm check-story-coverage  # Verify UX state matrix ↔ story mapping (required in CI)
+npm run storybook               # Run Storybook (full UX state catalog)
+npm run build-storybook         # Build static Storybook
+npm run check-story-coverage    # Verify UX state matrix ↔ story mapping (required in CI)
 
 # Other
-pnpm chromatic        # Push visual snapshots to Chromatic
-pnpm mutation         # StrykerJS mutation tests (slow; runs weekly in CI)
+npm run chromatic        # Push visual snapshots to Chromatic
+npm run mutation         # StrykerJS mutation tests (slow; runs weekly in CI)
 ```
 
 Environment: copy `.env.example` → `.env.local`. Key vars: `NEXT_PUBLIC_USE_MSW=true`, `NEXT_PUBLIC_RECONCILE_INTERVAL_MS=60000`.

@@ -1,5 +1,7 @@
 "use client";
 
+import { toast as copy } from "@/copy";
+
 interface AnniversaryToastProps {
   locationName: string;
   daysAdded: number;
@@ -29,16 +31,16 @@ export function AnniversaryToast({
       </div>
       <div className="flex-1">
         <p className="text-[10px] font-bold uppercase tracking-[1.5px] text-amber-400">
-          Anniversary bonus
+          {copy.anniversaryEyebrow}
         </p>
         <p className="mt-0.5 text-sm font-semibold text-white">
-          +{daysAdded} day added to {locationName}
+          {copy.anniversaryBody(daysAdded, locationName)}
         </p>
       </div>
       <button
         type="button"
         onClick={onDismiss}
-        aria-label="Dismiss"
+        aria-label={copy.dismissAria}
         className="text-zinc-400 hover:text-white"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -69,7 +71,7 @@ export function UndoToast({
         onClick={onUndo}
         className="rounded-full bg-violet-600 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white hover:bg-violet-500"
       >
-        Undo · {remaining}s
+        {copy.undoButton(remaining)}
       </button>
     </div>
   );

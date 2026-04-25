@@ -2,6 +2,7 @@ import { TopBar } from "@/components/shared/TopBar";
 import { BalanceCard } from "@/components/employee/BalanceCard";
 import { currentEmployee } from "@/mocks/data";
 import type { Balance, BalanceCardState } from "@/lib/types";
+import { statesPage as copy } from "@/copy";
 
 const now = Date.now();
 
@@ -10,7 +11,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
     {
       state: "loading",
       balance: makeBalance("loading", { days: 0, locationName: "Loading…" }),
-      caption: "Loading — under 400ms shimmer",
+      caption: copy.captions.loading,
     },
     {
       state: "loaded-fresh",
@@ -20,7 +21,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         isPrimary: true,
         accrualPerMonth: 1.5,
       }),
-      caption: "Loaded · Fresh — hero presentation",
+      caption: copy.captions.loadedFresh,
     },
     {
       state: "loaded-stale",
@@ -30,7 +31,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         syncedAt: now - 8 * 60_000,
         accrualPerMonth: 1,
       }),
-      caption: "Loaded · Stale — refreshing in background",
+      caption: copy.captions.loadedStale,
     },
     {
       state: "optimistic-pending",
@@ -39,7 +40,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         previousDays: 10,
         locationName: "New York HQ",
       }),
-      caption: "Optimistic · Pending — awaiting HCM",
+      caption: copy.captions.optimisticPending,
     },
     {
       state: "optimistic-confirmed",
@@ -47,7 +48,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         days: 7,
         locationName: "New York HQ",
       }),
-      caption: "Optimistic · Confirmed — momentary success flash",
+      caption: copy.captions.optimisticConfirmed,
     },
     {
       state: "optimistic-rolled-back",
@@ -55,7 +56,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         days: 10,
         locationName: "New York HQ",
       }),
-      caption: "Rolled back — HCM rejected the request",
+      caption: copy.captions.optimisticRolledBack,
     },
     {
       state: "anniversary-bonus",
@@ -63,7 +64,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         days: 11,
         locationName: "New York HQ",
       }),
-      caption: "Anniversary bonus — +1 day applied",
+      caption: copy.captions.anniversaryBonus,
     },
     {
       state: "reconciled",
@@ -72,7 +73,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         previousDays: 5,
         locationName: "Remote",
       }),
-      caption: "Reconciled — silent drift corrected by background sync",
+      caption: copy.captions.reconciled,
     },
     {
       state: "error",
@@ -81,7 +82,7 @@ const sampleStates: { state: BalanceCardState; balance: Balance; caption: string
         locationName: "New York HQ",
         syncedAt: now - 4 * 3600_000,
       }),
-      caption: "HCM unreachable — last known shown",
+      caption: copy.captions.error,
     },
   ];
 
@@ -98,14 +99,13 @@ export default function StatesPage() {
       <main className="mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-12">
         <header className="mb-10">
           <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
-            Design system · Balance Card
+            {copy.eyebrow}
           </p>
           <h1 className="mt-2 text-[40px] sm:text-[56px] font-extrabold tracking-[-1.5px] text-[#0F0B1E] leading-[1.05]">
-            Every state the card can be in.
+            {copy.title}
           </h1>
           <p className="mt-3 text-lg text-zinc-500">
-            Nine truths, one component. The card tells you where the data
-            stands — never lies, never hides.
+            {copy.subtitle}
           </p>
         </header>
 

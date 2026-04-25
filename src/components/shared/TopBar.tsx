@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { brand, nav } from "@/copy";
 
 interface TopBarProps {
   variant: "employee" | "manager";
@@ -39,7 +40,7 @@ export function TopBar({
               isManager ? "text-white" : "text-[#0F0B1E]",
             )}
           >
-            ExampleHR
+            {brand.productName}
           </span>
           <span
             className={cn(
@@ -47,7 +48,7 @@ export function TopBar({
               isManager ? "text-violet-300" : "text-zinc-500",
             )}
           >
-            · {isManager ? "Manager Console" : "Time Off"}
+            · {isManager ? brand.moduleManagerConsole : brand.moduleTimeOff}
           </span>
         </div>
 
@@ -56,27 +57,27 @@ export function TopBar({
           {isManager ? (
             <>
               <NavLink href="/time-off/manager" active>
-                Approvals {pendingCount > 0 && `(${pendingCount})`}
+                {nav.approvals(pendingCount)}
               </NavLink>
               <NavLink href="#" variant="manager">
-                Team
+                {nav.team}
               </NavLink>
               <NavLink href="#" variant="manager">
-                Reports
+                {nav.reports}
               </NavLink>
               <NavLink href="/time-off" variant="manager">
-                Switch to Employee
+                {nav.switchToEmployee}
               </NavLink>
             </>
           ) : (
             <>
               <NavLink href="/time-off" active>
-                Time Off
+                {nav.timeOff}
               </NavLink>
-              <NavLink href="#">Calendar</NavLink>
-              <NavLink href="#">Profile</NavLink>
-              <NavLink href="/time-off/manager">Switch to Manager</NavLink>
-              <NavLink href="/time-off/states">States Reference</NavLink>
+              <NavLink href="#">{nav.calendar}</NavLink>
+              <NavLink href="#">{nav.profile}</NavLink>
+              <NavLink href="/time-off/manager">{nav.switchToManager}</NavLink>
+              <NavLink href="/time-off/states">{nav.statesReference}</NavLink>
             </>
           )}
         </nav>

@@ -2,6 +2,7 @@
 
 import { cn, formatDateRange } from "@/lib/utils";
 import type { PendingApproval } from "@/lib/types";
+import { queueSidebar as copy } from "@/copy";
 
 interface QueueSidebarProps {
   items: PendingApproval[];
@@ -13,7 +14,7 @@ export function QueueSidebar({ items, selectedId, onSelect }: QueueSidebarProps)
   return (
     <aside>
       <p className="text-[12px] font-bold uppercase tracking-[1.5px] text-zinc-600">
-        Next in queue
+        {copy.title}
       </p>
 
       <ul className="mt-4 space-y-3">
@@ -65,8 +66,8 @@ export function QueueSidebar({ items, selectedId, onSelect }: QueueSidebarProps)
                       )}
                     />
                     {sufficient
-                      ? `${req.freshBalanceDays}d avail.`
-                      : `${req.freshBalanceDays}d avail · short`}
+                      ? copy.availOk(req.freshBalanceDays)
+                      : copy.availShort(req.freshBalanceDays)}
                   </span>
                 </div>
                 <span
@@ -102,10 +103,10 @@ export function QueueSidebar({ items, selectedId, onSelect }: QueueSidebarProps)
         </svg>
         <div>
           <p className="text-xs font-bold uppercase tracking-wide text-violet-800">
-            Balance check is live
+            {copy.balanceLiveTitle}
           </p>
           <p className="mt-1 text-[11px] text-violet-700">
-            Each card re-reads HCM when you focus it.
+            {copy.balanceLiveBody}
           </p>
         </div>
       </div>

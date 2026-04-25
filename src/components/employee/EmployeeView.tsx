@@ -8,6 +8,7 @@ import { RequestHistory } from "./RequestHistory";
 import { AnniversaryToast, UndoToast } from "./AnniversaryToast";
 import { currentEmployee, initialBalances, initialRequests } from "@/mocks/data";
 import type { Balance, LocationId, TimeOffRequest } from "@/lib/types";
+import { employee as copyEmployee } from "@/copy";
 import { newId } from "@/lib/utils";
 
 export function EmployeeView() {
@@ -175,10 +176,10 @@ export function EmployeeView() {
         {/* Page header */}
         <header className="mb-10">
           <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
-            Hi, {currentEmployee.name.split(" ")[0]}
+            {copyEmployee.pageEyebrow(currentEmployee.name.split(" ")[0])}
           </p>
           <h1 className="mt-2 text-[40px] sm:text-[56px] font-extrabold tracking-[-1.5px] text-[#0F0B1E] leading-[1.05]">
-            Your time off, at a glance.
+            {copyEmployee.pageTitle}
           </h1>
         </header>
 
@@ -211,14 +212,14 @@ export function EmployeeView() {
       {/* Toasts */}
       {anniversaryVisible && (
         <AnniversaryToast
-          locationName="New York HQ"
+          locationName={copyEmployee.anniversaryLocationFallback}
           daysAdded={1}
           onDismiss={() => setAnniversaryVisible(false)}
         />
       )}
       {undoState && (
         <UndoToast
-          message="Request cancelled"
+          message={copyEmployee.undoToastMessage}
           onUndo={handleUndo}
           remaining={undoState.secondsLeft}
         />
