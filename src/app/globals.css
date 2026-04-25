@@ -43,6 +43,20 @@ html, body {
   }
 }
 
+@keyframes roleDoodleFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.roleDoodle {
+  animation: roleDoodleFloat 4s ease-in-out infinite;
+}
+
 /* --- Page loader animations --- */
 @keyframes loaderMarkIn {
   from { opacity: 0; transform: scale(0.72); }

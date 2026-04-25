@@ -4,6 +4,11 @@ export default function Home() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6">
       <div className="max-w-2xl text-center">
+        <img
+          src="/role-selection-doodle.svg"
+          alt="Illustration of opening a box before choosing a view"
+          className="roleDoodle mx-auto mb-6 w-full max-w-xs motion-reduce:animate-none"
+        />
         <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
           ExampleHR · Time Off
         </p>

@@ -1,0 +1,952 @@
+Time-Off full validation report
+Generated at: Sat Apr 25 22:01:02 PKT 2026
+
+== Story Coverage ==
+
+> exhr-time-off-ui@0.1.0 check-story-coverage
+> tsx scripts/check-story-coverage.ts
+
+Story coverage check passed. Verified 28 matrix references across 5 story files.
+
+== Unit Test Suite ==
+
+> exhr-time-off-ui@0.1.0 test
+> vitest run --reporter=verbose --passWithNoTests
+
+
+ RUN  v4.1.5 /Users/muhammadsaadtanveer/Documents/Claude/Projects/Time-Off/Time-Off-Implementation
+
+(node:83383) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83382) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83380) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83381) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83378) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83379) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83384) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/idempotency.test.ts > POST /api/hcm/requests idempotency > returns the same created request for duplicate Idempotency-Key 424ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > cancels a pending request 262ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches employee requests 325ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rateLimitAfter returns 429 after limit 519ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > handles cancel error and still emits warning toast 309ms
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > approves when stale balance equals live 471ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > submits and settles request mutation and emits success toast 468ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > retains draft and emits error toast on rejection 155ms
+(node:83403) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > raises conflict error when stale balance mismatches live 257ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches manager pending requests 307ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > parses successful read operations 755ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > partialFail omits cells from batch response 272ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches request by id 256ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports getRequest by id 129ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > silentFailOnce skips mutating cancel 107ms
+(node:83405) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83406) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rejects overlapping request dates 293ms
+(node:83407) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches single balance 281ms
+(node:83413) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches batch balances 208ms
+ ✓ tests/mocks/clock.test.ts > mock clock + anniversary tick > fires scheduled anniversary bump when time advances 251ms
+ ✓ tests/unit/useReconciliationLoop.test.tsx > useReconciliationLoop > loads batch balances and enqueues drift notifications via store 328ms
+(node:83414) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useDenyRequest.test.tsx > useDenyRequest > denies request 318ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > submits when form is valid 123ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > disables controls while submitting 12ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > blocks submit when date range overlaps an existing request 126ms
+(node:83415) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83416) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/components/request-history.test.tsx > RequestHistory > shows empty state 28ms
+ ✓ tests/components/request-history.test.tsx > RequestHistory > calls onCancel for cancellable request 131ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > submits request with idempotency key and deduplicates 552ms
+(node:83417) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports approve, deny, and cancel operations 604ms
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > renders children when auth ids are present 32ms
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > blocks when employee id is missing 8ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats same-day ranges as one date 19ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats multi-day ranges with arrow 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > counts business days inclusively 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > returns zero when end is before start 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats relative time across boundaries 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > merges class names through cn 6ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses crypto.randomUUID branch in newId when available 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses fallback random branch in newId when crypto is absent 0ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders employee nav links 124ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders manager approvals count 21ms
+(node:83423) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83424) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to time-off row 3ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to pending approval with balance cell 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > falls back when location id is unknown 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending-submit status to optimistic request 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds loading balances when batch is pending 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds error balance when query errors 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > uses loaded-fresh fallback when batch is empty 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > prefers cached cell and marks stale by age 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > marks row optimistic-pending when matching submit location 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending approval with fallback values when fresh cell is missing 1ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > maps 404/400/409/500 responses to HcmClientError 460ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > throws ZodError on malformed success payload 2ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > returns default auth values from mock provider 6ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > accepts provider overrides 1ms
+(node:83425) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial balance 2ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial request 1ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every pending approval 1ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses locations and current employee 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses a single-cell balance response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses batch balances response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses submit-request body 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses canonical HCM request entity 0ms
+(node:83426) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83428) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > enqueues and dismisses notifications 5ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > auto-dismisses anniversary and unknown drift notifications 2ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > keeps year_start_reset notification until dismissed 0ms
+(node:83427) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > exposes stable root and segment keys 1ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches balance under balances() for invalidation 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches batchBalances under balances() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches employee requests under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches manager pending under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches single request under requests() 0ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > supports all legal transitions 2ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > throws on illegal transitions in dev mode 1ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > returns typed failure on illegal transitions in production mode 0ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > guards all terminal-state events in production 0ms
+(node:83434) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83435) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83436) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/idempotency.test.ts > idempotency > uses provided UUID generator for testability 1ms
+ ✓ tests/unit/idempotency.test.ts > idempotency > returns a non-empty key by default 0ms
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > diffs fresh batch rows against cache cells 4ms
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > categorizes anniversary bonus and year-start reset 1ms
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > auto-dismisses success/info/warning by configured TTL 2ms
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > keeps error toast sticky until dismissed 2ms
+(node:83437) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > restores seeded requests and balances 2ms
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > resets scenario flags 0ms
+(node:83438) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83439) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/observability.test.ts > observability > logs to console.debug in non-production 3ms
+ ✓ tests/unit/observability.test.ts > observability > sends to sink in production 2ms
+(node:83440) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > opens when error rate crosses threshold in sliding window 2ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > moves open -> half-open after cooldown -> closed on success 1ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > re-opens immediately on half-open failure 0ms
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets and resets fields 1ms
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets retainedUntil based on ttl 1ms
+(node:83447) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83446) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83448) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/broadcast-channel.test.ts > broadcast-channel wrapper > subscribes and unsubscribes handler 2ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > defaults to 60_000 when unset 1ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > parses positive integer from env 0ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > falls back on invalid value 0ms
+ ✓ tests/unit/query-client.test.ts > makeQueryClient > sets refetchIntervalInBackground false on queries 0ms
+ ✓ tests/unit/query-client.test.ts > query presets (Phase 3 table) > exports expected staleTime / gcTime shapes 0ms
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > updates filter and selection 1ms
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > records session decisions 1ms
+(node:83449) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/circuit-breaker.store.test.ts > circuit-breaker.store > tracks state transitions from underlying breaker 1ms
+(node:83450) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/conflict-modal.store.test.ts > conflict-modal.store > opens and closes with payload 1ms
+
+ Test Files  34 passed (34)
+      Tests  100 passed (100)
+   Start at  22:01:03
+   Duration  5.41s (transform 948ms, setup 5.96s, import 1.55s, tests 9.14s, environment 15.72s)
+
+
+== Integration Test Suite ==
+
+> exhr-time-off-ui@0.1.0 test:integration
+> vitest run --config vitest.integration.config.ts --reporter=verbose
+
+
+ RUN  v4.1.5 /Users/muhammadsaadtanveer/Documents/Claude/Projects/Time-Off/Time-Off-Implementation
+
+(node:83472) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83477) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83475) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83478) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83473) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83474) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83476) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches employee requests 171ms
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches single balance 173ms
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches batch balances 207ms
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > approves when stale balance equals live 315ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > cancels a pending request 317ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > submits and settles request mutation and emits success toast 371ms
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > raises conflict error when stale balance mismatches live 257ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches manager pending requests 308ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > retains draft and emits error toast on rejection 206ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > handles cancel error and still emits warning toast 312ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rateLimitAfter returns 429 after limit 617ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches request by id 257ms
+(node:83492) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > parses successful read operations 815ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > partialFail omits cells from batch response 201ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > silentFailOnce skips mutating cancel 145ms
+(node:83493) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports getRequest by id 222ms
+(node:83494) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83495) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rejects overlapping request dates 278ms
+(node:83496) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > submits request with idempotency key and deduplicates 262ms
+ ✓ tests/mocks/idempotency.test.ts > POST /api/hcm/requests idempotency > returns the same created request for duplicate Idempotency-Key 447ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > submits when form is valid 91ms
+ ✓ tests/unit/useDenyRequest.test.tsx > useDenyRequest > denies request 269ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > disables controls while submitting 16ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > blocks submit when date range overlaps an existing request 88ms
+ ✓ tests/mocks/clock.test.ts > mock clock + anniversary tick > fires scheduled anniversary bump when time advances 243ms
+ ✓ tests/unit/useReconciliationLoop.test.tsx > useReconciliationLoop > loads batch balances and enqueues drift notifications via store 334ms
+(node:83502) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83507) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports approve, deny, and cancel operations 643ms
+(node:83509) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83508) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83510) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83511) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/components/request-history.test.tsx > RequestHistory > shows empty state 20ms
+ ✓ tests/components/request-history.test.tsx > RequestHistory > calls onCancel for cancellable request 120ms
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > renders children when auth ids are present 14ms
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > blocks when employee id is missing 2ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats same-day ranges as one date 16ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats multi-day ranges with arrow 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > counts business days inclusively 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > returns zero when end is before start 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats relative time across boundaries 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > merges class names through cn 3ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses crypto.randomUUID branch in newId when available 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses fallback random branch in newId when crypto is absent 0ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders employee nav links 85ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders manager approvals count 18ms
+ ✓ tests/integration/manager-view.integration.test.tsx > ManagerView integration > loads manager queue from hooks and displays actions 445ms
+ ✓ tests/integration/employee-view.integration.test.tsx > EmployeeView integration > loads employee dashboard from hooks and MSW 137ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > maps 404/400/409/500 responses to HcmClientError 693ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > throws ZodError on malformed success payload 1ms
+(node:83517) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83519) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83518) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83521) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to time-off row 4ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to pending approval with balance cell 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > falls back when location id is unknown 2ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending-submit status to optimistic request 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds loading balances when batch is pending 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds error balance when query errors 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > uses loaded-fresh fallback when batch is empty 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > prefers cached cell and marks stale by age 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > marks row optimistic-pending when matching submit location 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending approval with fallback values when fresh cell is missing 1ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > returns default auth values from mock provider 12ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > accepts provider overrides 2ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > enqueues and dismisses notifications 4ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > auto-dismisses anniversary and unknown drift notifications 1ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > keeps year_start_reset notification until dismissed 1ms
+(node:83520) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83522) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial balance 3ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial request 2ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every pending approval 1ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses locations and current employee 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses a single-cell balance response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses batch balances response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses submit-request body 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses canonical HCM request entity 0ms
+ ✓ tests/unit/observability.test.ts > observability > logs to console.debug in non-production 1ms
+ ✓ tests/unit/observability.test.ts > observability > sends to sink in production 1ms
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > diffs fresh batch rows against cache cells 3ms
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > categorizes anniversary bonus and year-start reset 1ms
+(node:83523) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > auto-dismisses success/info/warning by configured TTL 3ms
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > keeps error toast sticky until dismissed 1ms
+(node:83529) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83531) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83530) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83533) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > opens when error rate crosses threshold in sliding window 2ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > moves open -> half-open after cooldown -> closed on success 1ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > re-opens immediately on half-open failure 0ms
+(node:83532) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > restores seeded requests and balances 3ms
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > resets scenario flags 0ms
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets and resets fields 1ms
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets retainedUntil based on ttl 1ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > supports all legal transitions 3ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > throws on illegal transitions in dev mode 1ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > returns typed failure on illegal transitions in production mode 0ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > guards all terminal-state events in production 1ms
+(node:83534) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > updates filter and selection 1ms
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > records session decisions 3ms
+ ✓ tests/unit/idempotency.test.ts > idempotency > uses provided UUID generator for testability 2ms
+ ✓ tests/unit/idempotency.test.ts > idempotency > returns a non-empty key by default 1ms
+(node:83540) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > defaults to 60_000 when unset 1ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > parses positive integer from env 0ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > falls back on invalid value 0ms
+ ✓ tests/unit/query-client.test.ts > makeQueryClient > sets refetchIntervalInBackground false on queries 0ms
+ ✓ tests/unit/query-client.test.ts > query presets (Phase 3 table) > exports expected staleTime / gcTime shapes 0ms
+(node:83541) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83542) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83543) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83544) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/broadcast-channel.test.ts > broadcast-channel wrapper > subscribes and unsubscribes handler 3ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > exposes stable root and segment keys 1ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches balance under balances() for invalidation 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches batchBalances under balances() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches employee requests under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches manager pending under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches single request under requests() 0ms
+ ✓ tests/unit/conflict-modal.store.test.ts > conflict-modal.store > opens and closes with payload 1ms
+ ✓ tests/unit/circuit-breaker.store.test.ts > circuit-breaker.store > tracks state transitions from underlying breaker 1ms
+
+ Test Files  36 passed (36)
+      Tests  102 passed (102)
+   Start at  22:01:08
+   Duration  5.49s (transform 1.05s, setup 5.94s, import 1.92s, tests 9.32s, environment 15.68s)
+
+
+== Contract Test Suite ==
+
+> exhr-time-off-ui@0.1.0 test:contract
+> vitest run --config vitest.contract.config.ts --reporter=verbose
+
+
+ RUN  v4.1.5 /Users/muhammadsaadtanveer/Documents/Claude/Projects/Time-Off/Time-Off-Implementation
+
+(node:83570) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83568) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83567) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83566) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83571) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83572) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83569) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/contract/hcm-endpoints.contract.test.ts > HCM endpoint contract > rejects missing required query params 301ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > cancels a pending request 316ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches employee requests 326ms
+ ✓ tests/contract/hcm-endpoints.contract.test.ts > HCM endpoint contract > returns valid balance shape for a known employee/location 126ms
+ ✓ tests/unit/useCancelRequest.test.tsx > useCancelRequest > handles cancel error and still emits warning toast 157ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > submits and settles request mutation and emits success toast 416ms
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > approves when stale balance equals live 518ms
+ ✓ tests/unit/useSubmitRequest.test.tsx > useSubmitRequest > retains draft and emits error toast on rejection 257ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches manager pending requests 311ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rateLimitAfter returns 429 after limit 695ms
+ ✓ tests/unit/useApproveRequest.test.tsx > useApproveRequest > raises conflict error when stale balance mismatches live 256ms
+ ✓ tests/unit/useRequests.test.tsx > useRequests hooks > fetches request by id 207ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > partialFail omits cells from batch response 130ms
+(node:83583) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > parses successful read operations 863ms
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > silentFailOnce skips mutating cancel 190ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports getRequest by id 154ms
+(node:83588) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/scenarios.test.ts > mock scenarios > rejects overlapping request dates 184ms
+(node:83589) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/contract/hcm-endpoints.contract.test.ts > HCM endpoint contract > enforces POST /requests payload and idempotency behavior 750ms
+(node:83590) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/contract/hcm-endpoints.contract.test.ts > HCM endpoint contract > requires denial reason and returns denied request 268ms
+ ✓ tests/mocks/idempotency.test.ts > POST /api/hcm/requests idempotency > returns the same created request for duplicate Idempotency-Key 462ms
+(node:83598) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches single balance 221ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > submits request with idempotency key and deduplicates 531ms
+ ✓ tests/unit/useReconciliationLoop.test.tsx > useReconciliationLoop > loads batch balances and enqueues drift notifications via store 324ms
+ ✓ tests/unit/useBalances.test.tsx > useBalances > fetches batch balances 207ms
+ ✓ tests/unit/useDenyRequest.test.tsx > useDenyRequest > denies request 314ms
+(node:83599) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/clock.test.ts > mock clock + anniversary tick > fires scheduled anniversary bump when time advances 241ms
+(node:83600) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > supports approve, deny, and cancel operations 547ms
+(node:83606) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/components/request-history.test.tsx > RequestHistory > shows empty state 27ms
+(node:83607) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/components/request-history.test.tsx > RequestHistory > calls onCancel for cancellable request 143ms
+(node:83608) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats same-day ranges as one date 15ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats multi-day ranges with arrow 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > counts business days inclusively 1ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > returns zero when end is before start 1ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > formats relative time across boundaries 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > merges class names through cn 2ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses crypto.randomUUID branch in newId when available 0ms
+ ✓ tests/unit/date-utils.test.ts > date-utils > uses fallback random branch in newId when crypto is absent 0ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > submits when form is valid 100ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > disables controls while submitting 19ms
+ ✓ tests/components/request-composer.test.tsx > RequestComposer > blocks submit when date range overlaps an existing request 161ms
+(node:83614) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > renders children when auth ids are present 39ms
+ ✓ tests/unit/auth-gate.test.tsx > AuthGate > blocks when employee id is missing 4ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders employee nav links 137ms
+ ✓ tests/components/top-bar.test.tsx > TopBar > renders manager approvals count 25ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > returns default auth values from mock provider 12ms
+ ✓ tests/unit/useAuth.test.tsx > useAuth > accepts provider overrides 1ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > maps 404/400/409/500 responses to HcmClientError 596ms
+ ✓ tests/unit/hcm-client.test.ts > hcm-client > throws ZodError on malformed success payload 2ms
+(node:83615) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83616) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83617) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial balance 5ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every initial request 1ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses every pending approval 1ms
+ ✓ tests/unit/schemas-hcm.test.ts > UI schemas parse fixture data > parses locations and current employee 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses a single-cell balance response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses batch balances response 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses submit-request body 0ms
+ ✓ tests/unit/schemas-hcm.test.ts > HCM wire schemas (TRD / MOCK_HCM_SPEC) > parses canonical HCM request entity 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to time-off row 7ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps HCM request to pending approval with balance cell 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > falls back when location id is unknown 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending-submit status to optimistic request 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds loading balances when batch is pending 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > builds error balance when query errors 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > uses loaded-fresh fallback when batch is empty 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > prefers cached cell and marks stale by age 1ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > marks row optimistic-pending when matching submit location 0ms
+ ✓ tests/unit/map-hcm-to-ui.test.ts > map-hcm-to-ui > maps pending approval with fallback values when fresh cell is missing 1ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > enqueues and dismisses notifications 2ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > auto-dismisses anniversary and unknown drift notifications 1ms
+ ✓ tests/unit/drift-notifications.store.test.ts > drift-notifications.store > keeps year_start_reset notification until dismissed 0ms
+(node:83618) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83619) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > supports all legal transitions 2ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > throws on illegal transitions in dev mode 1ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > returns typed failure on illegal transitions in production mode 0ms
+ ✓ tests/unit/request-state-machine.test.ts > request-state-machine > guards all terminal-state events in production 0ms
+(node:83620) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83621) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > diffs fresh batch rows against cache cells 4ms
+ ✓ tests/unit/reconciliation.test.ts > reconciliation > categorizes anniversary bonus and year-start reset 1ms
+ ✓ tests/contract/hcm-schemas.contract.test.ts > HCM schema contract > accepts canonical valid payloads 5ms
+ ✓ tests/contract/hcm-schemas.contract.test.ts > HCM schema contract > rejects invalid wire payloads 1ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > opens when error rate crosses threshold in sliding window 1ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > moves open -> half-open after cooldown -> closed on success 0ms
+ ✓ tests/unit/circuit-breaker.test.ts > circuit-breaker > re-opens immediately on half-open failure 0ms
+(node:83628) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83627) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83629) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > restores seeded requests and balances 1ms
+ ✓ tests/mocks/state-reset.test.ts > resetMockState > resets scenario flags 0ms
+ ✓ tests/unit/broadcast-channel.test.ts > broadcast-channel wrapper > subscribes and unsubscribes handler 2ms
+ ✓ tests/unit/idempotency.test.ts > idempotency > uses provided UUID generator for testability 1ms
+ ✓ tests/unit/idempotency.test.ts > idempotency > returns a non-empty key by default 0ms
+(node:83630) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83631) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83633) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83632) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > auto-dismisses success/info/warning by configured TTL 2ms
+ ✓ tests/unit/toast-queue.store.test.ts > toast-queue.store > keeps error toast sticky until dismissed 1ms
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > updates filter and selection 2ms
+ ✓ tests/unit/manager-filters.store.test.ts > manager-filters.store > records session decisions 1ms
+ ✓ tests/unit/observability.test.ts > observability > logs to console.debug in non-production 3ms
+ ✓ tests/unit/observability.test.ts > observability > sends to sink in production 3ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > defaults to 60_000 when unset 1ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > parses positive integer from env 0ms
+ ✓ tests/unit/query-client.test.ts > readReconcileIntervalMs > falls back on invalid value 0ms
+ ✓ tests/unit/query-client.test.ts > makeQueryClient > sets refetchIntervalInBackground false on queries 0ms
+ ✓ tests/unit/query-client.test.ts > query presets (Phase 3 table) > exports expected staleTime / gcTime shapes 0ms
+(node:83639) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83640) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83641) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets and resets fields 1ms
+ ✓ tests/unit/request-draft.store.test.ts > request-draft.store > sets retainedUntil based on ttl 1ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > exposes stable root and segment keys 1ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches balance under balances() for invalidation 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches batchBalances under balances() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches employee requests under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches manager pending under requests() 0ms
+ ✓ tests/unit/query-keys.test.ts > qk hierarchy > prefix-matches single request under requests() 0ms
+ ✓ tests/unit/conflict-modal.store.test.ts > conflict-modal.store > opens and closes with payload 1ms
+(node:83642) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ tests/unit/circuit-breaker.store.test.ts > circuit-breaker.store > tracks state transitions from underlying breaker 1ms
+
+ Test Files  36 passed (36)
+      Tests  106 passed (106)
+   Start at  22:01:14
+   Duration  5.49s (transform 746ms, setup 5.49s, import 1.47s, tests 10.74s, environment 15.29s)
+
+
+== E2E Test Suite ==
+
+> exhr-time-off-ui@0.1.0 test:e2e
+> playwright test
+
+
+Running 2 tests using 1 worker
+
+[1A[2K(node:83669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:83669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] [chromium] › tests/e2e/time-off-journeys.spec.ts:4:7 › time off journeys › employee to manager tab switch works
+[1A[2K[2/2] [chromium] › tests/e2e/time-off-journeys.spec.ts:17:7 › time off journeys › employee request composer behaves correctly
+[1A[2K  2 passed (932ms)
+
+== Storybook Build Result ==
+
+> exhr-time-off-ui@0.1.0 build-storybook
+> storybook build
+
+@storybook/core v8.6.18
+
+info => Cleaning outputDir: storybook-static
+info => Loading presets
+(node:83700) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+info => Building manager..
+info => Manager built ([38;2;181;126;229m70 ms[39m)
+info => Building preview..
+info Addon-docs: using MDX3
+info => Using implicit CSS loaders
+info => Using SWC as compiler
+info => Using default Webpack5 setup
+<s> [webpack.Progress] 0% 
+
+<s> [webpack.Progress] 1% setup before run
+<s> [webpack.Progress] 1% setup before run NodeEnvironmentPlugin
+<s> [webpack.Progress] 1% setup before run
+<s> [webpack.Progress] 2% setup run
+<s> [webpack.Progress] 2% setup run
+<s> [webpack.Progress] 4% setup normal module factory
+<s> [webpack.Progress] 4% setup normal module factory CaseSensitivePathsPlugin
+<s> [webpack.Progress] 4% setup normal module factory
+<s> [webpack.Progress] 5% setup context module factory
+<s> [webpack.Progress] 5% setup context module factory
+<s> [webpack.Progress] 6% setup before compile
+<s> [webpack.Progress] 6% setup before compile ProgressPlugin
+<s> [webpack.Progress] 6% setup before compile
+<s> [webpack.Progress] 7% setup compile
+<s> [webpack.Progress] 7% setup compile ExternalsPlugin
+<s> [webpack.Progress] 7% setup compile ExternalsPlugin
+<s> [webpack.Progress] 7% setup compile
+<s> [webpack.Progress] 8% setup compilation
+<s> [webpack.Progress] 8% setup compilation HtmlWebpackPlugin
+<s> [webpack.Progress] 8% setup compilation unplugin-csf
+<s> [webpack.Progress] 8% setup compilation ArrayPushCallbackChunkFormatPlugin
+<s> [webpack.Progress] 8% setup compilation JsonpChunkLoadingPlugin
+<s> [webpack.Progress] 8% setup compilation StartupChunkDependenciesPlugin
+<s> [webpack.Progress] 8% setup compilation ImportScriptsChunkLoadingPlugin
+<s> [webpack.Progress] 8% setup compilation FetchCompileWasmPlugin
+<s> [webpack.Progress] 8% setup compilation FetchCompileAsyncWasmPlugin
+<s> [webpack.Progress] 8% setup compilation WorkerPlugin
+<s> [webpack.Progress] 8% setup compilation SplitChunksPlugin
+<s> [webpack.Progress] 8% setup compilation RuntimeChunkPlugin
+<s> [webpack.Progress] 8% setup compilation ResolverCachePlugin
+<s> [webpack.Progress] 8% setup compilation
+<s> [webpack.Progress] 9% setup compilation
+<s> [webpack.Progress] 9% setup compilation DefinePlugin
+<s> [webpack.Progress] 9% setup compilation ProvidePlugin
+<s> [webpack.Progress] 9% setup compilation ProgressPlugin
+<s> [webpack.Progress] 9% setup compilation DefinePlugin
+<s> [webpack.Progress] 9% setup compilation DefinePlugin
+<s> [webpack.Progress] 9% setup compilation ProvidePlugin
+<s> [webpack.Progress] 9% setup compilation ChunkPrefetchPreloadPlugin
+<s> [webpack.Progress] 9% setup compilation SourceMapDevToolPlugin
+<s> [webpack.Progress] 9% setup compilation JavascriptModulesPlugin
+<s> [webpack.Progress] 9% setup compilation JsonModulesPlugin
+<s> [webpack.Progress] 9% setup compilation AssetModulesPlugin
+<s> [webpack.Progress] 9% setup compilation EntryPlugin
+<s> [webpack.Progress] 9% setup compilation RuntimePlugin
+<s> [webpack.Progress] 9% setup compilation InferAsyncModulesPlugin
+<s> [webpack.Progress] 9% setup compilation DataUriPlugin
+<s> [webpack.Progress] 9% setup compilation FileUriPlugin
+<s> [webpack.Progress] 9% setup compilation CompatibilityPlugin
+<s> [webpack.Progress] 9% setup compilation HarmonyModulesPlugin
+<s> [webpack.Progress] 9% setup compilation AMDPlugin
+<s> [webpack.Progress] 9% setup compilation RequireJsStuffPlugin
+<s> [webpack.Progress] 9% setup compilation CommonJsPlugin
+<s> [webpack.Progress] 9% setup compilation LoaderPlugin
+<s> [webpack.Progress] 9% setup compilation LoaderPlugin
+<s> [webpack.Progress] 9% setup compilation NodeStuffPlugin
+<s> [webpack.Progress] 9% setup compilation APIPlugin
+<s> [webpack.Progress] 9% setup compilation ExportsInfoApiPlugin
+<s> [webpack.Progress] 9% setup compilation WebpackIsIncludedPlugin
+<s> [webpack.Progress] 9% setup compilation ConstPlugin
+<s> [webpack.Progress] 9% setup compilation UseStrictPlugin
+<s> [webpack.Progress] 9% setup compilation RequireIncludePlugin
+<s> [webpack.Progress] 9% setup compilation RequireEnsurePlugin
+<s> [webpack.Progress] 9% setup compilation RequireContextPlugin
+<s> [webpack.Progress] 9% setup compilation ImportPlugin
+<s> [webpack.Progress] 9% setup compilation ImportMetaContextPlugin
+<s> [webpack.Progress] 9% setup compilation SystemPlugin
+<s> [webpack.Progress] 9% setup compilation ImportMetaPlugin
+<s> [webpack.Progress] 9% setup compilation URLPlugin
+<s> [webpack.Progress] 9% setup compilation DefaultStatsFactoryPlugin
+<s> [webpack.Progress] 9% setup compilation DefaultStatsPresetPlugin
+<s> [webpack.Progress] 9% setup compilation DefaultStatsPrinterPlugin
+<s> [webpack.Progress] 9% setup compilation JavascriptMetaInfoPlugin
+<s> [webpack.Progress] 9% setup compilation EnsureChunkConditionsPlugin
+<s> [webpack.Progress] 9% setup compilation RemoveEmptyChunksPlugin
+<s> [webpack.Progress] 9% setup compilation MergeDuplicateChunksPlugin
+<s> [webpack.Progress] 9% setup compilation FlagIncludedChunksPlugin
+<s> [webpack.Progress] 9% setup compilation SideEffectsFlagPlugin
+<s> [webpack.Progress] 9% setup compilation FlagDependencyExportsPlugin
+<s> [webpack.Progress] 9% setup compilation FlagDependencyUsagePlugin
+<s> [webpack.Progress] 9% setup compilation InnerGraphPlugin
+<s> [webpack.Progress] 9% setup compilation MangleExportsPlugin
+<s> [webpack.Progress] 9% setup compilation ModuleConcatenationPlugin
+<s> [webpack.Progress] 9% setup compilation NoEmitOnErrorsPlugin
+<s> [webpack.Progress] 9% setup compilation RealContentHashPlugin
+<s> [webpack.Progress] 9% setup compilation WasmFinalizeExportsPlugin
+<s> [webpack.Progress] 9% setup compilation NamedModuleIdsPlugin
+<s> [webpack.Progress] 9% setup compilation DeterministicChunkIdsPlugin
+<s> [webpack.Progress] 9% setup compilation DefinePlugin
+<s> [webpack.Progress] 9% setup compilation TerserPlugin
+<s> [webpack.Progress] 9% setup compilation TemplatedPathPlugin
+<s> [webpack.Progress] 9% setup compilation RecordIdsPlugin
+<s> [webpack.Progress] 9% setup compilation WarnCaseSensitiveModulesPlugin
+<s> [webpack.Progress] 9% setup compilation IgnoreWarningsPlugin
+<s> [webpack.Progress] 9% setup compilation
+<s> [webpack.Progress] 10% building
+<s> [webpack.Progress] 10% building 0/1 entries 0/0 dependencies 0/0 modules
+info => Copying static files: public at storybook-static
+info Using tsconfig paths for react-docgen
+<s> [webpack.Progress] 15% building 0/1 entries 106/143 dependencies 18/66 modules
+<s> [webpack.Progress] 32% building 0/1 entries 680/800 dependencies 113/282 modules
+<s> [webpack.Progress] 65% building 1/1 entries 2079/2079 dependencies 728/728 modules
+<s> [webpack.Progress] 65% building
+<s> [webpack.Progress] 69% building finish
+<s> [webpack.Progress] 69% building finish
+<s> [webpack.Progress] 70% sealing finish module graph
+<s> [webpack.Progress] 70% sealing finish module graph ResolverCachePlugin
+<s> [webpack.Progress] 70% sealing finish module graph InferAsyncModulesPlugin
+<s> [webpack.Progress] 70% sealing finish module graph FlagDependencyExportsPlugin
+<s> [webpack.Progress] 70% sealing finish module graph InnerGraphPlugin
+<s> [webpack.Progress] 70% sealing finish module graph WasmFinalizeExportsPlugin
+<s> [webpack.Progress] 70% sealing finish module graph
+<s> [webpack.Progress] 70% sealing plugins
+<s> [webpack.Progress] 70% sealing plugins WarnCaseSensitiveModulesPlugin
+<s> [webpack.Progress] 70% sealing plugins
+<s> [webpack.Progress] 71% sealing dependencies optimization
+<s> [webpack.Progress] 71% sealing dependencies optimization SideEffectsFlagPlugin
+<s> [webpack.Progress] 71% sealing dependencies optimization FlagDependencyUsagePlugin
+<s> [webpack.Progress] 71% sealing dependencies optimization
+<s> [webpack.Progress] 71% sealing after dependencies optimization
+<s> [webpack.Progress] 71% sealing after dependencies optimization
+<s> [webpack.Progress] 72% sealing chunk graph
+<s> [webpack.Progress] 72% sealing chunk graph
+<s> [webpack.Progress] 73% sealing after chunk graph
+<s> [webpack.Progress] 73% sealing after chunk graph
+<s> [webpack.Progress] 73% sealing optimizing
+<s> [webpack.Progress] 73% sealing optimizing
+<s> [webpack.Progress] 74% sealing module optimization
+<s> [webpack.Progress] 74% sealing module optimization
+<s> [webpack.Progress] 75% sealing after module optimization
+<s> [webpack.Progress] 75% sealing after module optimization
+<s> [webpack.Progress] 75% sealing chunk optimization
+<s> [webpack.Progress] 75% sealing chunk optimization EnsureChunkConditionsPlugin
+<s> [webpack.Progress] 75% sealing chunk optimization RemoveEmptyChunksPlugin
+<s> [webpack.Progress] 75% sealing chunk optimization MergeDuplicateChunksPlugin
+<s> [webpack.Progress] 75% sealing chunk optimization SplitChunksPlugin
+<s> [webpack.Progress] 75% sealing chunk optimization RemoveEmptyChunksPlugin
+<s> [webpack.Progress] 75% sealing chunk optimization
+<s> [webpack.Progress] 76% sealing after chunk optimization
+<s> [webpack.Progress] 76% sealing after chunk optimization
+<s> [webpack.Progress] 77% sealing module and chunk tree optimization
+<s> [webpack.Progress] 77% sealing module and chunk tree optimization PersistentChildCompilerSingletonPlugin
+<s> [webpack.Progress] 77% sealing module and chunk tree optimization
+<s> [webpack.Progress] 77% sealing after module and chunk tree optimization
+<s> [webpack.Progress] 77% sealing after module and chunk tree optimization
+<s> [webpack.Progress] 78% sealing chunk modules optimization
+<s> [webpack.Progress] 78% sealing chunk modules optimization ModuleConcatenationPlugin
+<s> [webpack.Progress] 78% sealing chunk modules optimization
+<s> [webpack.Progress] 78% sealing after chunk modules optimization
+<s> [webpack.Progress] 78% sealing after chunk modules optimization
+<s> [webpack.Progress] 79% sealing module reviving
+<s> [webpack.Progress] 79% sealing module reviving RecordIdsPlugin
+<s> [webpack.Progress] 79% sealing module reviving
+<s> [webpack.Progress] 80% sealing before module ids
+<s> [webpack.Progress] 80% sealing before module ids
+<s> [webpack.Progress] 80% sealing module ids
+<s> [webpack.Progress] 80% sealing module ids NamedModuleIdsPlugin
+<s> [webpack.Progress] 80% sealing module ids
+<s> [webpack.Progress] 81% sealing module id optimization
+<s> [webpack.Progress] 81% sealing module id optimization
+<s> [webpack.Progress] 82% sealing module id optimization
+<s> [webpack.Progress] 82% sealing module id optimization
+<s> [webpack.Progress] 82% sealing chunk reviving
+<s> [webpack.Progress] 82% sealing chunk reviving RecordIdsPlugin
+<s> [webpack.Progress] 82% sealing chunk reviving
+<s> [webpack.Progress] 83% sealing before chunk ids
+<s> [webpack.Progress] 83% sealing before chunk ids
+<s> [webpack.Progress] 84% sealing chunk ids
+<s> [webpack.Progress] 84% sealing chunk ids DeterministicChunkIdsPlugin
+<s> [webpack.Progress] 84% sealing chunk ids
+<s> [webpack.Progress] 84% sealing chunk id optimization
+<s> [webpack.Progress] 84% sealing chunk id optimization FlagIncludedChunksPlugin
+<s> [webpack.Progress] 84% sealing chunk id optimization
+<s> [webpack.Progress] 85% sealing after chunk id optimization
+<s> [webpack.Progress] 85% sealing after chunk id optimization
+<s> [webpack.Progress] 86% sealing record modules
+<s> [webpack.Progress] 86% sealing record modules RecordIdsPlugin
+<s> [webpack.Progress] 86% sealing record modules
+<s> [webpack.Progress] 86% sealing record chunks
+<s> [webpack.Progress] 86% sealing record chunks RecordIdsPlugin
+<s> [webpack.Progress] 86% sealing record chunks
+<s> [webpack.Progress] 87% sealing module hashing
+<s> [webpack.Progress] 87% sealing module hashing
+<s> [webpack.Progress] 87% sealing code generation
+<s> [webpack.Progress] 87% sealing code generation
+<s> [webpack.Progress] 88% sealing runtime requirements
+<s> [webpack.Progress] 88% sealing runtime requirements
+<s> [webpack.Progress] 89% sealing hashing
+<s> [webpack.Progress] 89% sealing hashing
+<s> [webpack.Progress] 89% sealing after hashing
+<s> [webpack.Progress] 89% sealing after hashing
+<s> [webpack.Progress] 90% sealing record hash
+<s> [webpack.Progress] 90% sealing record hash
+<s> [webpack.Progress] 91% sealing module assets processing
+<s> [webpack.Progress] 91% sealing module assets processing
+<s> [webpack.Progress] 91% sealing chunk assets processing
+<s> [webpack.Progress] 91% sealing chunk assets processing
+<s> [webpack.Progress] 92% sealing asset processing
+<s> [webpack.Progress] 92% sealing asset processing PersistentChildCompilerSingletonPlugin
+<s> [webpack.Progress] 92% sealing asset processing TerserPlugin
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin main.b4474844.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin main.b4474844.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin runtime~main.c056e6ce.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin runtime~main.c056e6ce.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin BalanceCard-stories.9d62c745.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin BalanceCard-stories.9d62c745.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin ComponentName-stories.943a78ee.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin ComponentName-stories.943a78ee.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin EmployeeView-stories.b641ea83.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin EmployeeView-stories.b641ea83.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin ManagerView-stories.71b92ec2.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin ManagerView-stories.71b92ec2.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin RequestComposer-stories.bd20334a.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin RequestComposer-stories.bd20334a.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 304.08f39714.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 304.08f39714.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 253.17838600.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 253.17838600.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 930.b5e164c7.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 930.b5e164c7.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 115.c2dc11cb.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 115.c2dc11cb.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 79.d80a9f12.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 79.d80a9f12.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 341.d63d03a0.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 341.d63d03a0.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 18.cce9021c.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 18.cce9021c.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 979.5c58e6ab.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 979.5c58e6ab.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 265.62ac91f8.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 265.62ac91f8.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 740.97190b51.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 740.97190b51.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 903.00b8dde3.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 903.00b8dde3.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 971.19a06829.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 971.19a06829.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 473.c97b0a6b.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 473.c97b0a6b.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 903.00b8dde3.iframe.bundle.js attach SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 903.00b8dde3.iframe.bundle.js attached SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 971.19a06829.iframe.bundle.js attach SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin 971.19a06829.iframe.bundle.js attached SourceMap
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources
+<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin
+<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
+<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
+<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin resolve sources
+<s> [webpack.Progress] 92% sealing asset processing HtmlWebpackPlugin
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin main.6c6284b1.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin main.6c6284b1.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin runtime~main.9f5f702b.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin runtime~main.9f5f702b.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin BalanceCard-stories.b7e056ca.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin BalanceCard-stories.b7e056ca.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin ComponentName-stories.baf28f43.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin ComponentName-stories.baf28f43.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin EmployeeView-stories.4210773a.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin EmployeeView-stories.4210773a.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin ManagerView-stories.95ec1c1f.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin ManagerView-stories.95ec1c1f.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin RequestComposer-stories.baf919cb.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin RequestComposer-stories.baf919cb.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 253.6ee10a6c.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 253.6ee10a6c.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 930.7e348772.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 930.7e348772.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 79.30016b1d.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 79.30016b1d.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 341.97665547.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 341.97665547.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 18.1b0fa237.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 18.1b0fa237.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 979.d2bbb32f.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 979.d2bbb32f.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 265.151f56d9.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 265.151f56d9.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 740.439358d7.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 740.439358d7.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 473.9d3453ea.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 473.9d3453ea.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 304.e5f13b2a.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 304.e5f13b2a.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 115.d0f6b139.iframe.bundle.js generate SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin 115.d0f6b139.iframe.bundle.js generated SourceMap
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin resolve sources
+<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin
+<s> [webpack.Progress] 92% sealing asset processing
+<s> [webpack.Progress] 93% sealing after asset optimization
+<s> [webpack.Progress] 93% sealing after asset optimization
+<s> [webpack.Progress] 93% sealing recording
+<s> [webpack.Progress] 93% sealing recording
+<s> [webpack.Progress] 94% sealing after seal
+<s> [webpack.Progress] 94% sealing after seal
+<s> [webpack.Progress] 95% emitting emit
+<s> [webpack.Progress] 95% emitting emit
+<s> [webpack.Progress] 98% emitting after emit
+<s> [webpack.Progress] 98% emitting after emit SizeLimitsPlugin
+<s> [webpack.Progress] 98% emitting after emit
+<s> [webpack.Progress] 99% done plugins
+<s> [webpack.Progress] 99% done plugins CaseSensitivePathsPlugin
+<s> [webpack.Progress] 99% done plugins
+<s> [webpack.Progress] 99% 
+
+<s> [webpack.Progress] 99% cache store build dependencies
+<s> [webpack.Progress] 99% cache store build dependencies
+<s> [webpack.Progress] 99% cache begin idle
+<s> [webpack.Progress] 99% cache begin idle
+<s> [webpack.Progress] 100% 
+
+WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+WARN This can impact web performance.
+WARN Assets: 
+WARN   115.d0f6b139.iframe.bundle.js (817 KiB)
+WARN   903.46144ef2.iframe.bundle.js (2.55 MiB)
+WARN   971.af77f51e.iframe.bundle.js (977 KiB)
+WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+WARN Entrypoints:
+WARN   main (2.65 MiB)
+WARN       runtime~main.9f5f702b.iframe.bundle.js
+WARN       903.46144ef2.iframe.bundle.js
+WARN       main.6c6284b1.iframe.bundle.js
+WARN 
+<s> [webpack.Progress] 99% cache shutdown
+<s> [webpack.Progress] 99% cache shutdown
+<s> [webpack.Progress] 100% 
+
+info => Preview built ([38;2;181;126;229m6.49 s[39m)
+info => Output directory: /Users/muhammadsaadtanveer/Documents/Claude/Projects/Time-Off/Time-Off-Implementation/storybook-static
