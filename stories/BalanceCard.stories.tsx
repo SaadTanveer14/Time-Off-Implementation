@@ -25,15 +25,23 @@ const verifyCard: Story["play"] = async ({ canvasElement }) => {
   await expect(within(canvasElement).getByText(/days/i)).toBeInTheDocument();
 };
 
-export const Loading: Story = { args: { balance: { ...base, state: "loading" } }, play: verifyCard };
+const verifyLoadingCard: Story["play"] = async ({ canvasElement }) => {
+  await expect(within(canvasElement).getByText(/shimmer/i)).toBeInTheDocument();
+};
+
+const verifyReconciledCard: Story["play"] = async ({ canvasElement }) => {
+  await expect(within(canvasElement).getByText(/^reconciled$/i)).toBeInTheDocument();
+};
+
+export const Loading: Story = { args: { balance: { ...base, state: "loading" } }, play: verifyLoadingCard };
 export const LoadedFresh: Story = { args: { balance: { ...base, state: "loaded-fresh" } }, play: verifyCard };
 export const LoadedStale: Story = { args: { balance: { ...base, state: "loaded-stale" } }, play: verifyCard };
 export const OptimisticPending: Story = { args: { balance: { ...base, state: "optimistic-pending", previousDays: 14 } }, play: verifyCard };
 export const OptimisticConfirmed: Story = { args: { balance: { ...base, state: "optimistic-confirmed" } }, play: verifyCard };
 export const OptimisticRolledBack: Story = { args: { balance: { ...base, state: "optimistic-rolled-back", previousDays: 10 } }, play: verifyCard };
-export const SilentlyWrongCorrected: Story = { args: { balance: { ...base, state: "reconciled", previousDays: 15 } }, play: verifyCard };
+export const SilentlyWrongCorrected: Story = { args: { balance: { ...base, state: "reconciled", previousDays: 15 } }, play: verifyReconciledCard };
 export const AnniversaryBonusApplied: Story = { args: { balance: { ...base, state: "anniversary-bonus", days: 13 } }, play: verifyCard };
-export const YearStartRefresh: Story = { args: { balance: { ...base, state: "reconciled", days: 20, previousDays: 0 } }, play: verifyCard };
+export const YearStartRefresh: Story = { args: { balance: { ...base, state: "reconciled", days: 20, previousDays: 0 } }, play: verifyReconciledCard };
 export const Error: Story = { args: { balance: { ...base, state: "error" } }, play: verifyCard };
 export const PartialFailure: Story = { args: { balance: { ...base, state: "error", locationName: "Remote" } }, play: verifyCard };
 export const ReducedMotion: Story = { args: { balance: { ...base, state: "loaded-fresh" } }, play: verifyCard, parameters: { reducedMotion: true } };
