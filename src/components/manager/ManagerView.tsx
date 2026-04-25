@@ -29,7 +29,7 @@ export function ManagerView() {
   const pushSessionDecision = useManagerFiltersStore((s) => s.pushSessionDecision);
 
   const pendingQuery = usePendingRequests(auth.managerId);
-  const pendingRaw = pendingQuery.data ?? [];
+  const pendingRaw = useMemo(() => pendingQuery.data ?? [], [pendingQuery.data]);
 
   const uniquePairs = useMemo(() => {
     const m = new Map<string, HcmRequest>();
