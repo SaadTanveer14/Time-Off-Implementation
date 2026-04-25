@@ -79,7 +79,7 @@ export function ApprovalCard({
           <p className="text-[11px] font-bold uppercase tracking-[1px] text-zinc-500">
             {copy.employeeNoteEyebrow}
           </p>
-          <p className="mt-2 text-sm italic text-zinc-700">"{request.note}"</p>
+          <p className="mt-2 text-sm italic text-zinc-700">&quot;{request.note}&quot;</p>
         </div>
       )}
 
