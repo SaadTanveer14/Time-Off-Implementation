@@ -19,7 +19,7 @@ export default defineConfig({
   webServer: {
     // Production server avoids a Next dev + hoisted Storybook webpack@5.101.2 interaction
     // (SSR/runtime errors) while still exercising the same routes as local dev.
-    command: 'npm run build && npm run start',
+    command: 'NEXT_PUBLIC_USE_MSW=true npm run build && NEXT_PUBLIC_USE_MSW=true npm run start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 180000,

@@ -211,32 +211,34 @@ export function ManagerView() {
           <p className="mt-3 text-lg text-zinc-500">{copy.subtitle}</p>
         </header>
 
-        <div className="mb-8 flex items-center gap-2 rounded-2xl bg-white border border-zinc-200 p-3">
-          <FilterChip
-            active={filter === "pending"}
-            onClick={() => setFilter("pending")}
-            count={counts.pending}
-            tone="amber"
-          >
-            {copy.filterPending}
-          </FilterChip>
-          <FilterChip
-            active={filter === "approved"}
-            onClick={() => setFilter("approved")}
-            count={counts.approved}
-            tone="emerald"
-          >
-            {copy.filterApproved}
-          </FilterChip>
-          <FilterChip
-            active={filter === "denied"}
-            onClick={() => setFilter("denied")}
-            count={counts.denied}
-            tone="rose"
-          >
-            {copy.filterDenied}
-          </FilterChip>
-          <div className="ml-auto flex items-center gap-3">
+        <div className="mb-8 flex flex-col gap-3 rounded-2xl bg-white border border-zinc-200 p-3 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterChip
+              active={filter === "pending"}
+              onClick={() => setFilter("pending")}
+              count={counts.pending}
+              tone="amber"
+            >
+              {copy.filterPending}
+            </FilterChip>
+            <FilterChip
+              active={filter === "approved"}
+              onClick={() => setFilter("approved")}
+              count={counts.approved}
+              tone="emerald"
+            >
+              {copy.filterApproved}
+            </FilterChip>
+            <FilterChip
+              active={filter === "denied"}
+              onClick={() => setFilter("denied")}
+              count={counts.denied}
+              tone="rose"
+            >
+              {copy.filterDenied}
+            </FilterChip>
+          </div>
+          <div className="flex items-center justify-end gap-3 sm:ml-auto">
             <span className="text-xs font-medium text-zinc-500">{copy.sortBy}</span>
             <span className="rounded-full bg-zinc-50 border border-zinc-200 px-3 py-1.5 text-xs font-semibold text-[#0F0B1E]">
               {copy.sortSubmitted}

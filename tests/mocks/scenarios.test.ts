@@ -34,4 +34,25 @@ describe("mock scenarios", () => {
     const again = getMockState().requests.get(pending!.id);
     expect(again?.status).toBe("pending-approval");
   });
+
+  it("rejects overlapping request dates", async () => {
+    const res = await fetch("http://localhost/api/hcm/requests", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "idempotency-key": "idem_overlap_test",
+      },
+      body: JSON.stringify({
+        employeeId: "emp_alex",
+        locationId: "ny-hq",
+        startDate: "2026-05-03",
+        endDate: "2026-05-04",
+        days: 2,
+      }),
+    });
+    expect(res.status).toBe(409);
+    const body = await res.json();
+    expect(body.code).toBe("VALIDATION");
+    expect(String(body.message).toLowerCase()).toContain("overlapping");
+  });
 });

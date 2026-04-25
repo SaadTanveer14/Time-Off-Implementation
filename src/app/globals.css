@@ -42,3 +42,30 @@ html, body {
     transform: translateY(0);
   }
 }
+
+/* --- Page loader animations --- */
+@keyframes loaderMarkIn {
+  from { opacity: 0; transform: scale(0.72); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes loaderSpineSlide {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+@keyframes loaderBarSlide {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes loaderDotPop {
+  0%   { transform: scale(0); opacity: 0; }
+  65%  { transform: scale(1.45); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes loaderWordIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes loaderOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

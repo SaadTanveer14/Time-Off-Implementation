@@ -33,6 +33,10 @@ const ErrorBodySchema = z.object({
   freshAvailable: z.number().int().optional(),
 });
 
+function dateRangesOverlap(aStart: string, aEnd: string, bStart: string, bEnd: string): boolean {
+  return aStart <= bEnd && bStart <= aEnd;
+}
+
 function logVerbose(line: string): void {
   if (!mockScenarioFlags.verbose) return;
   console.debug(`[mock-hcm] ${line}`);
@@ -286,6 +290,23 @@ export const handlers = [
       return HttpResponse.json(ErrorBodySchema.parse({ code: "VALIDATION", message: "endDate before startDate" }), {
         status: 400,
       });
+    }
+
+    const overlapping = [...getMockState().requests.values()].some(
+      (r) =>
+        r.employeeId === b.employeeId &&
+        r.locationId === b.locationId &&
+        (r.status === "pending-submit" || r.status === "pending-approval" || r.status === "approved") &&
+        dateRangesOverlap(b.startDate, b.endDate, r.startDate, r.endDate),
+    );
+    if (overlapping) {
+      return HttpResponse.json(
+        ErrorBodySchema.parse({
+          code: "VALIDATION",
+          message: "Overlapping date range with an existing request",
+        }),
+        { status: 409 },
+      );
     }
 
     const ins = mockScenarioFlags.rejectInsufficientAt;

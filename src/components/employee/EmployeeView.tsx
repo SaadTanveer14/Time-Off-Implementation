@@ -159,6 +159,7 @@ export function EmployeeView() {
           <div className="lg:col-span-2">
             <RequestComposer
               availableByLocation={availableByLocation}
+              requests={requestsUi}
               onSubmit={handleSubmit}
               submitting={submitMutation.isPending}
             />

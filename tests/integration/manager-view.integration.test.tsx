@@ -8,7 +8,7 @@ describe("ManagerView integration", () => {
     renderWithProviders(<ManagerView />);
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /approve .*commit/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /^approve$/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /^deny$/i })).toBeInTheDocument();
     });
   });

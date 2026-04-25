@@ -2,13 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { cn, businessDays, formatDateRange } from "@/lib/utils";
-import type { LocationId } from "@/lib/types";
+import type { LocationId, TimeOffRequest } from "@/lib/types";
 import { composer as copy, daysLabel } from "@/copy";
 import { locations } from "@/lib/locations";
 
 interface RequestComposerProps {
   /** Map of locationId -> available days */
   availableByLocation: Record<LocationId, number>;
+  requests?: TimeOffRequest[];
   submitting?: boolean;
   onSubmit: (req: {
     locationId: LocationId;
@@ -21,6 +22,7 @@ interface RequestComposerProps {
 
 export function RequestComposer({
   availableByLocation,
+  requests = [],
   submitting = false,
   onSubmit,
 }: RequestComposerProps) {
@@ -35,10 +37,21 @@ export function RequestComposer({
   );
   const available = availableByLocation[locationId] ?? 0;
   const sufficient = days <= available && days > 0;
+  const hasOverlap = useMemo(() => {
+    const activeStatuses = new Set(["submitting", "pending", "approved"]);
+    return requests.some(
+      (r) =>
+        r.locationId === locationId &&
+        activeStatuses.has(r.status) &&
+        startDate <= r.endDate &&
+        r.startDate <= endDate,
+    );
+  }, [requests, locationId, startDate, endDate]);
+  const canSubmit = sufficient && !hasOverlap && !submitting;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!sufficient || submitting) return;
+    if (!canSubmit) return;
     onSubmit({ locationId, startDate, endDate, days, note: note.trim() || undefined });
     setNote("");
   };
@@ -130,6 +143,10 @@ export function RequestComposer({
             <span className="rounded-full bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-600">
               {copy.pickDateRange}
             </span>
+          ) : hasOverlap ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-100 px-4 py-1.5 text-xs font-semibold text-rose-800">
+              <span aria-hidden>⚠</span> {copy.overlapConflict}
+            </span>
           ) : sufficient ? (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-800">
               <CheckIcon /> {copy.sufficientChip(available - days)}
@@ -156,7 +173,7 @@ export function RequestComposer({
         {/* Submit */}
         <button
           type="submit"
-          disabled={!sufficient || submitting}
+          disabled={!canSubmit}
           aria-busy={submitting}
           className={cn(
             "group relative flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-sm font-bold transition-all",

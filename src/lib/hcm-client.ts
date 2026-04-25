@@ -13,7 +13,7 @@ import {
 const HcmRequestListSchema = z.array(HcmRequestSchema);
 const SilentOkSchema = z.object({ status: z.literal("ok") });
 
-const DEFAULT_HCM_BASE_URL = "http://localhost:3000/api/hcm";
+const DEFAULT_HCM_BASE_URL = "/api/hcm";
 
 export type HcmError = {
   status: number;
@@ -41,7 +41,14 @@ function getBaseUrl(): string {
 }
 
 function buildUrl(path: string, params?: Record<string, string | number | undefined>): string {
-  const url = new URL(`${getBaseUrl()}${path}`);
+  const base = getBaseUrl();
+  const baseWithPath = `${base}${path}`;
+  const url = /^https?:\/\//i.test(base)
+    ? new URL(baseWithPath)
+    : new URL(
+        baseWithPath,
+        typeof window !== "undefined" ? window.location.origin : "http://localhost:3000",
+      );
   if (params) {
     for (const [key, value] of Object.entries(params)) {
       if (value === undefined) continue;
