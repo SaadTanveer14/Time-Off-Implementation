@@ -18,6 +18,13 @@ dist/
 
 # Testing
 coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Storybook
+storybook-static/
 
 # Environment (keep .env.example if you add one)
 .env
@@ -54,3 +61,6 @@ Thumbs.db
 
 # Misc
 *.pem
+
+#claude
+CLAUDE.md

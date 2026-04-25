@@ -1,188 +1,149 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { useIsMutating, useQueryClient } from "@tanstack/react-query";
 import { TopBar } from "@/components/shared/TopBar";
 import { BalanceCard } from "./BalanceCard";
 import { RequestComposer } from "./RequestComposer";
 import { RequestHistory } from "./RequestHistory";
-import { AnniversaryToast, UndoToast } from "./AnniversaryToast";
-import { currentEmployee, initialBalances, initialRequests } from "@/mocks/data";
-import type { Balance, LocationId, TimeOffRequest } from "@/lib/types";
-import { newId } from "@/lib/utils";
+import { AnniversaryToast } from "./AnniversaryToast";
+import type { LocationId } from "@/lib/types";
+import { employee as copyEmployee } from "@/copy";
+import { useAuth } from "@/hooks/useAuth";
+import { useBatchBalances } from "@/hooks/useBalances";
+import { useRequests } from "@/hooks/useRequests";
+import { useSubmitRequest } from "@/hooks/useSubmitRequest";
+import { useCancelRequest } from "@/hooks/useCancelRequest";
+import { useReconciliationLoop } from "@/hooks/useReconciliationLoop";
+import {
+  buildBalancesForEmployeeView,
+  mapHcmRequestToTimeOffRequest,
+} from "@/lib/map-hcm-to-ui";
+import { useDriftNotificationsStore } from "@/state/drift-notifications.store";
 
 export function EmployeeView() {
-  const [balances, setBalances] = useState<Balance[]>(initialBalances);
-  const [requests, setRequests] = useState<TimeOffRequest[]>(initialRequests);
+  const auth = useAuth();
+  const queryClient = useQueryClient();
 
-  // Anniversary toast (shown on mount, like the design)
-  const [anniversaryVisible, setAnniversaryVisible] = useState(true);
+  const batchQuery = useBatchBalances(auth.employeeId);
+  const requestsQuery = useRequests(auth.employeeId);
+  useReconciliationLoop(auth.employeeId);
+  const submitMutation = useSubmitRequest(auth.employeeId);
+  const cancelMutation = useCancelRequest();
 
-  // Undo toast for cancellations
-  const [undoState, setUndoState] = useState<{
-    request: TimeOffRequest;
-    secondsLeft: number;
-  } | null>(null);
+  const submitMutating =
+    useIsMutating({ mutationKey: ["submit-request", auth.employeeId] }) > 0;
+  const submitVars = submitMutation.variables as { locationId?: string } | undefined;
+  const submitLocationId = submitVars?.locationId;
 
-  // Auto-dismiss anniversary toast
-  useEffect(() => {
-    const t = setTimeout(() => setAnniversaryVisible(false), 6000);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Undo countdown
-  useEffect(() => {
-    if (!undoState) return;
-    if (undoState.secondsLeft <= 0) {
-      // Commit cancellation
-      setRequests((prev) =>
-        prev.map((r) =>
-          r.id === undoState.request.id ? { ...r, status: "cancelled" as const } : r,
-        ),
-      );
-      setUndoState(null);
-      return;
+  const locationNameById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const row of batchQuery.data?.balances ?? []) {
+      map.set(row.locationId, row.locationName);
     }
-    const t = setTimeout(
-      () =>
-        setUndoState((prev) =>
-          prev ? { ...prev, secondsLeft: prev.secondsLeft - 1 } : null,
-        ),
-      1000,
-    );
-    return () => clearTimeout(t);
-  }, [undoState]);
+    return map;
+  }, [batchQuery.data]);
 
-  const availableByLocation: Record<LocationId, number> = balances.reduce(
-    (acc, b) => {
-      acc[b.locationId] = b.days;
-      return acc;
-    },
-    {} as Record<LocationId, number>,
+  const requestsUi = useMemo(
+    () =>
+      (requestsQuery.data ?? []).map((r) =>
+        mapHcmRequestToTimeOffRequest(r, auth.employeeName, locationNameById),
+      ),
+    [requestsQuery.data, auth.employeeName, locationNameById],
   );
 
-  // ----- Submit handler with optimistic mutation -----
-  const handleSubmit = (input: {
-    locationId: LocationId;
-    startDate: string;
-    endDate: string;
-    days: number;
-    note?: string;
-  }) => {
-    const id = newId("req");
-    const optimisticReq: TimeOffRequest = {
-      id,
-      employeeId: currentEmployee.id,
-      employeeName: currentEmployee.name,
-      locationId: input.locationId,
-      locationName:
-        balances.find((b) => b.locationId === input.locationId)?.locationName ?? "",
-      startDate: input.startDate,
-      endDate: input.endDate,
-      days: input.days,
-      status: "submitting",
-      note: input.note,
-      submittedAt: Date.now(),
-      optimistic: true,
-    };
+  const balancesUi = useMemo(
+    () =>
+      buildBalancesForEmployeeView({
+        employeeId: auth.employeeId,
+        primaryLocationId: auth.employeePrimaryLocationId,
+        batch: batchQuery.data,
+        dataUpdatedAt: batchQuery.dataUpdatedAt,
+        isPending: batchQuery.isPending,
+        isFetching: batchQuery.isFetching,
+        isError: batchQuery.isError,
+        queryClient,
+        submitMutationIsPending: submitMutating,
+        submitLocationId,
+      }),
+    [
+      auth.employeeId,
+      auth.employeePrimaryLocationId,
+      batchQuery.data,
+      batchQuery.dataUpdatedAt,
+      batchQuery.isPending,
+      batchQuery.isFetching,
+      batchQuery.isError,
+      queryClient,
+      submitMutating,
+      submitLocationId,
+    ],
+  );
 
-    // Optimistic add
-    setRequests((prev) => [optimisticReq, ...prev]);
-
-    // Optimistic balance decrement
-    setBalances((prev) =>
-      prev.map((b) =>
-        b.locationId === input.locationId
-          ? {
-              ...b,
-              previousDays: b.days,
-              days: b.days - input.days,
-              state: "optimistic-pending",
-            }
-          : b,
-      ),
+  const availableByLocation: Record<LocationId, number> = useMemo(() => {
+    return balancesUi.reduce(
+      (acc, b) => {
+        acc[b.locationId] = b.days;
+        return acc;
+      },
+      {} as Record<LocationId, number>,
     );
+  }, [balancesUi]);
 
-    // Simulate HCM confirmation after 1.2s
-    setTimeout(() => {
-      setRequests((prev) =>
-        prev.map((r) =>
-          r.id === id
-            ? { ...r, status: "pending" as const, optimistic: false }
-            : r,
-        ),
-      );
-      setBalances((prev) =>
-        prev.map((b) =>
-          b.locationId === input.locationId
-            ? {
-                ...b,
-                state: "loaded-fresh",
-                syncedAt: Date.now(),
-                previousDays: undefined,
-              }
-            : b,
-        ),
-      );
-    }, 1200);
-  };
+  const handleSubmit = useCallback(
+    (input: {
+      locationId: LocationId;
+      startDate: string;
+      endDate: string;
+      days: number;
+      note?: string;
+    }) => {
+      submitMutation.mutate({
+        employeeId: auth.employeeId,
+        locationId: input.locationId,
+        startDate: input.startDate,
+        endDate: input.endDate,
+        days: input.days,
+        note: input.note,
+      });
+    },
+    [submitMutation, auth.employeeId],
+  );
 
-  // ----- Cancel with undo -----
-  const handleCancel = (id: string) => {
-    const target = requests.find((r) => r.id === id);
-    if (!target) return;
+  const handleCancel = useCallback(
+    (id: string) => {
+      cancelMutation.mutate({ employeeId: auth.employeeId, requestId: id });
+    },
+    [cancelMutation, auth.employeeId],
+  );
 
-    // Hide row immediately by marking as cancelling-optimistic
-    setRequests((prev) => prev.filter((r) => r.id !== id));
+  const anniversaryDrift = useDriftNotificationsStore((s) =>
+    s.notifications.find((n) => n.category === "anniversary_bonus"),
+  );
+  const dismissDrift = useDriftNotificationsStore((s) => s.dismiss);
 
-    // Restore balance optimistically
-    setBalances((prev) =>
-      prev.map((b) =>
-        b.locationId === target.locationId
-          ? { ...b, days: b.days + target.days }
-          : b,
-      ),
-    );
-
-    setUndoState({ request: target, secondsLeft: 5 });
-  };
-
-  const handleUndo = () => {
-    if (!undoState) return;
-    setRequests((prev) => [undoState.request, ...prev]);
-    setBalances((prev) =>
-      prev.map((b) =>
-        b.locationId === undoState.request.locationId
-          ? { ...b, days: b.days - undoState.request.days }
-          : b,
-      ),
-    );
-    setUndoState(null);
-  };
-
-  const heroBalance = balances.find((b) => b.isPrimary) ?? balances[0];
-  const otherBalances = balances.filter((b) => b !== heroBalance);
+  const heroBalance = balancesUi.find((b) => b.isPrimary) ?? balancesUi[0];
+  const otherBalances = balancesUi.filter((b) => b !== heroBalance);
 
   return (
     <div className="min-h-screen bg-[#FAFAF7]">
       <TopBar
         variant="employee"
-        userName={currentEmployee.name}
-        userInitials={currentEmployee.initials}
-        userRole={currentEmployee.role}
+        userName={auth.employeeName}
+        userInitials={auth.employeeInitials}
+        userRole={auth.employeeRole}
       />
 
       <main className="mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-12">
-        {/* Page header */}
         <header className="mb-10">
           <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
-            Hi, {currentEmployee.name.split(" ")[0]}
+            {copyEmployee.pageEyebrow(auth.employeeName.split(" ")[0] ?? auth.employeeName)}
           </p>
           <h1 className="mt-2 text-[40px] sm:text-[56px] font-extrabold tracking-[-1.5px] text-[#0F0B1E] leading-[1.05]">
-            Your time off, at a glance.
+            {copyEmployee.pageTitle}
           </h1>
         </header>
 
-        {/* Balance cards */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-10">
           {heroBalance && (
             <div className="lg:col-span-1">
@@ -194,33 +155,25 @@ export function EmployeeView() {
           ))}
         </section>
 
-        {/* Composer + History */}
         <section className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2">
             <RequestComposer
               availableByLocation={availableByLocation}
               onSubmit={handleSubmit}
+              submitting={submitMutation.isPending}
             />
           </div>
           <div className="lg:col-span-3">
-            <RequestHistory requests={requests} onCancel={handleCancel} />
+            <RequestHistory requests={requestsUi} onCancel={handleCancel} />
           </div>
         </section>
       </main>
 
-      {/* Toasts */}
-      {anniversaryVisible && (
+      {anniversaryDrift && (
         <AnniversaryToast
-          locationName="New York HQ"
-          daysAdded={1}
-          onDismiss={() => setAnniversaryVisible(false)}
-        />
-      )}
-      {undoState && (
-        <UndoToast
-          message="Request cancelled"
-          onUndo={handleUndo}
-          remaining={undoState.secondsLeft}
+          locationName={anniversaryDrift.locationName || copyEmployee.anniversaryLocationFallback}
+          daysAdded={Math.max(1, anniversaryDrift.delta)}
+          onDismiss={() => dismissDrift(anniversaryDrift.id)}
         />
       )}
     </div>

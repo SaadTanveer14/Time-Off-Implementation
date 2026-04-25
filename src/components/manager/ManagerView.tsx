@@ -1,118 +1,216 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { TopBar } from "@/components/shared/TopBar";
 import { ApprovalCard } from "./ApprovalCard";
 import { QueueSidebar } from "./QueueSidebar";
 import { ConflictModal } from "./ConflictModal";
-import { currentManager, pendingApprovals as initialPending } from "@/mocks/data";
-import type { PendingApproval } from "@/lib/types";
-
-type Filter = "pending" | "approved" | "denied";
+import type { HcmRequest, PendingApproval } from "@/lib/types";
+import { manager as copy, requestCountLabel } from "@/copy";
+import { useAuth } from "@/hooks/useAuth";
+import { usePendingRequests } from "@/hooks/useRequests";
+import { useApproveRequest } from "@/hooks/useApproveRequest";
+import { useDenyRequest } from "@/hooks/useDenyRequest";
+import { getBalance } from "@/lib/hcm-client";
+import { qk } from "@/lib/query-keys";
+import { balanceQueryDefaults } from "@/lib/query-client";
+import { mapHcmRequestToPendingApproval } from "@/lib/map-hcm-to-ui";
+import { useManagerFiltersStore } from "@/state/manager-filters.store";
+import { useConflictModalStore } from "@/state/conflict-modal.store";
 
 export function ManagerView() {
-  const [pending, setPending] = useState<PendingApproval[]>(initialPending);
-  const [decided, setDecided] = useState<
-    { req: PendingApproval; outcome: "approved" | "denied" }[]
-  >([]);
-  const [selectedId, setSelectedId] = useState<string>(initialPending[0]?.id ?? "");
-  const [filter, setFilter] = useState<Filter>("pending");
-  const [committing, setCommitting] = useState(false);
+  const auth = useAuth();
+  const filter = useManagerFiltersStore((s) => s.filter);
+  const selectedId = useManagerFiltersStore((s) => s.selectedId);
+  const setFilter = useManagerFiltersStore((s) => s.setFilter);
+  const setSelected = useManagerFiltersStore((s) => s.setSelected);
+  const sessionDecisions = useManagerFiltersStore((s) => s.sessionDecisions);
+  const pushSessionDecision = useManagerFiltersStore((s) => s.pushSessionDecision);
 
-  // Conflict modal state — randomly trigger on approve to demo
-  const [conflict, setConflict] = useState<{
-    request: PendingApproval;
-    staleBalance: number;
-    liveBalance: number;
-  } | null>(null);
+  const pendingQuery = usePendingRequests(auth.managerId);
+  const pendingRaw = pendingQuery.data ?? [];
+
+  const uniquePairs = useMemo(() => {
+    const m = new Map<string, HcmRequest>();
+    for (const r of pendingRaw) {
+      m.set(`${r.employeeId}|${r.locationId}`, r);
+    }
+    return [...m.values()];
+  }, [pendingRaw]);
+
+  const balanceQueries = useQueries({
+    queries: uniquePairs.map((req) => ({
+      queryKey: qk.balance(req.employeeId, req.locationId),
+      queryFn: () => getBalance(req.employeeId, req.locationId),
+      ...balanceQueryDefaults,
+      enabled: filter === "pending" && pendingRaw.length > 0,
+    })),
+  });
+
+  const cellByPair = useMemo(() => {
+    const map = new Map<string, (typeof balanceQueries)[0]["data"]>();
+    uniquePairs.forEach((req, i) => {
+      const d = balanceQueries[i]?.data;
+      if (d) map.set(`${req.employeeId}|${req.locationId}`, d);
+    });
+    return map;
+  }, [uniquePairs, balanceQueries]);
+
+  const pendingMapped: PendingApproval[] = useMemo(
+    () =>
+      pendingRaw.map((r) => {
+        const cell = cellByPair.get(`${r.employeeId}|${r.locationId}`);
+        return mapHcmRequestToPendingApproval(r, cell ?? undefined);
+      }),
+    [pendingRaw, cellByPair],
+  );
+
+  useEffect(() => {
+    const ids = pendingMapped.map((r) => r.id);
+    if (ids.length === 0) return;
+    if (!selectedId || !ids.includes(selectedId)) {
+      setSelected(ids[0]!);
+    }
+  }, [pendingMapped, selectedId, setSelected]);
 
   const selected =
-    pending.find((r) => r.id === selectedId) ?? pending[0] ?? null;
+    pendingMapped.find((r) => r.id === selectedId) ?? pendingMapped[0] ?? null;
 
-  const handleApproveClick = () => {
+  const approveMutation = useApproveRequest();
+  const denyMutation = useDenyRequest();
+
+  const committing = approveMutation.isPending || denyMutation.isPending;
+
+  const conflictOpen = useConflictModalStore((s) => s.open);
+  const conflictRequestId = useConflictModalStore((s) => s.requestId);
+  const conflictStale = useConflictModalStore((s) => s.staleBalance);
+  const conflictLive = useConflictModalStore((s) => s.liveBalance);
+  const closeConflictModal = useConflictModalStore((s) => s.closeModal);
+
+  const conflictRequest = useMemo(() => {
+    if (!conflictOpen || !conflictRequestId) return null;
+    return pendingMapped.find((r) => r.id === conflictRequestId) ?? null;
+  }, [conflictOpen, conflictRequestId, pendingMapped]);
+
+  const handleApproveClick = useCallback(() => {
     if (!selected) return;
-
-    // ~50% chance trigger conflict modal for the demo
-    const shouldConflict = Math.random() < 0.5;
-    if (shouldConflict) {
-      setConflict({
-        request: selected,
+    approveMutation.mutate(
+      {
+        managerId: auth.managerId,
+        requestId: selected.id,
+        employeeId: selected.employeeId,
+        locationId: selected.locationId,
+        requestedDays: selected.days,
         staleBalance: selected.freshBalanceDays,
-        liveBalance: Math.max(selected.days, selected.freshBalanceDays - 4),
-      });
+      },
+      {
+        onSuccess: () => {
+          pushSessionDecision({ req: selected, outcome: "approved" });
+        },
+      },
+    );
+  }, [approveMutation, auth.managerId, selected, pushSessionDecision]);
+
+  const handleDeny = useCallback(() => {
+    if (!selected) return;
+    denyMutation.mutate(
+      {
+        managerId: auth.managerId,
+        requestId: selected.id,
+        reason: copy.denyDefaultReason,
+        employeeId: selected.employeeId,
+        locationId: selected.locationId,
+      },
+      {
+        onSuccess: () => {
+          pushSessionDecision({ req: selected, outcome: "denied" });
+        },
+      },
+    );
+  }, [denyMutation, auth.managerId, selected, pushSessionDecision]);
+
+  const handleDenyConflictRequest = useCallback(() => {
+    const req = conflictRequest ?? selected;
+    if (!req) {
+      closeConflictModal();
       return;
     }
-    commitApproval(selected);
-  };
+    denyMutation.mutate(
+      {
+        managerId: auth.managerId,
+        requestId: req.id,
+        reason: copy.denyDefaultReason,
+        employeeId: req.employeeId,
+        locationId: req.locationId,
+      },
+      {
+        onSuccess: () => {
+          closeConflictModal();
+          pushSessionDecision({ req, outcome: "denied" });
+        },
+      },
+    );
+  }, [conflictRequest, selected, denyMutation, auth.managerId, closeConflictModal, pushSessionDecision]);
 
-  const commitApproval = (req: PendingApproval) => {
-    setCommitting(true);
-    setTimeout(() => {
-      setPending((prev) => prev.filter((r) => r.id !== req.id));
-      setDecided((prev) => [{ req, outcome: "approved" }, ...prev]);
-      setSelectedId((prev) => {
-        const remaining = pending.filter((r) => r.id !== req.id);
-        return remaining[0]?.id ?? "";
-      });
-      setCommitting(false);
-      setConflict(null);
-    }, 1100);
-  };
+  const handleApproveAnyway = useCallback(() => {
+    const { requestId, liveBalance } = useConflictModalStore.getState();
+    if (liveBalance === undefined || requestId === undefined) {
+      closeConflictModal();
+      return;
+    }
+    const req = pendingMapped.find((r) => r.id === requestId);
+    if (!req) {
+      closeConflictModal();
+      return;
+    }
+    closeConflictModal();
+    approveMutation.mutate(
+      {
+        managerId: auth.managerId,
+        requestId: req.id,
+        employeeId: req.employeeId,
+        locationId: req.locationId,
+        requestedDays: req.days,
+        staleBalance: liveBalance,
+      },
+      {
+        onSuccess: () => {
+          pushSessionDecision({ req, outcome: "approved" });
+        },
+      },
+    );
+  }, [approveMutation, auth.managerId, pendingMapped, closeConflictModal, pushSessionDecision]);
 
-  const handleDeny = () => {
-    if (!selected) return;
-    setCommitting(true);
-    setTimeout(() => {
-      setPending((prev) => prev.filter((r) => r.id !== selected.id));
-      setDecided((prev) => [
-        { req: selected, outcome: "denied" },
-        ...prev,
-      ]);
-      setSelectedId((prev) => {
-        const remaining = pending.filter((r) => r.id !== selected.id);
-        return remaining[0]?.id ?? "";
-      });
-      setCommitting(false);
-      setConflict(null);
-    }, 800);
-  };
-
-  const queueOthers = pending.filter((r) => r.id !== selected?.id);
+  const queueOthers = pendingMapped.filter((r) => r.id !== selected?.id);
 
   const counts = {
-    pending: pending.length,
-    approved: decided.filter((d) => d.outcome === "approved").length,
-    denied: decided.filter((d) => d.outcome === "denied").length,
+    pending: pendingMapped.length,
+    approved: sessionDecisions.filter((d) => d.outcome === "approved").length,
+    denied: sessionDecisions.filter((d) => d.outcome === "denied").length,
   };
 
   return (
     <div className="min-h-screen bg-[#FAFAF7]">
       <TopBar
         variant="manager"
-        userName={currentManager.name}
-        userInitials={currentManager.initials}
-        userRole={currentManager.role}
+        userName={auth.managerName}
+        userInitials={auth.managerInitials}
+        userRole={auth.managerRole}
         pendingCount={counts.pending}
       />
 
       <main className="mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-12">
-        {/* Page header */}
         <header className="mb-8">
           <p className="text-[14px] font-semibold uppercase tracking-[2px] text-violet-600">
-            Manager · Approvals
+            {copy.pageEyebrow}
           </p>
           <h1 className="mt-2 text-[40px] sm:text-[52px] font-extrabold tracking-[-1.5px] text-[#0F0B1E] leading-[1.05]">
-            {counts.pending === 0
-              ? "All caught up."
-              : `${counts.pending} request${counts.pending !== 1 ? "s" : ""} need${counts.pending === 1 ? "s" : ""} your call.`}
+            {counts.pending === 0 ? copy.allCaughtUp : requestCountLabel(counts.pending)}
           </h1>
-          <p className="mt-3 text-lg text-zinc-500">
-            Each action commits to HCM. The balance you see is read fresh just
-            for you.
-          </p>
+          <p className="mt-3 text-lg text-zinc-500">{copy.subtitle}</p>
         </header>
 
-        {/* Filter bar */}
         <div className="mb-8 flex items-center gap-2 rounded-2xl bg-white border border-zinc-200 p-3">
           <FilterChip
             active={filter === "pending"}
@@ -120,7 +218,7 @@ export function ManagerView() {
             count={counts.pending}
             tone="amber"
           >
-            Pending
+            {copy.filterPending}
           </FilterChip>
           <FilterChip
             active={filter === "approved"}
@@ -128,7 +226,7 @@ export function ManagerView() {
             count={counts.approved}
             tone="emerald"
           >
-            Approved
+            {copy.filterApproved}
           </FilterChip>
           <FilterChip
             active={filter === "denied"}
@@ -136,17 +234,16 @@ export function ManagerView() {
             count={counts.denied}
             tone="rose"
           >
-            Denied
+            {copy.filterDenied}
           </FilterChip>
           <div className="ml-auto flex items-center gap-3">
-            <span className="text-xs font-medium text-zinc-500">Sort by</span>
+            <span className="text-xs font-medium text-zinc-500">{copy.sortBy}</span>
             <span className="rounded-full bg-zinc-50 border border-zinc-200 px-3 py-1.5 text-xs font-semibold text-[#0F0B1E]">
-              Submitted ↓
+              {copy.sortSubmitted}
             </span>
           </div>
         </div>
 
-        {/* Main grid */}
         {filter === "pending" && selected && (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-8">
             <ApprovalCard
@@ -159,43 +256,45 @@ export function ManagerView() {
             <QueueSidebar
               items={queueOthers}
               selectedId={selectedId}
-              onSelect={setSelectedId}
+              onSelect={setSelected}
             />
           </div>
         )}
 
         {filter === "pending" && !selected && (
-          <EmptyState
-            title="The queue is clear."
-            body="Nothing waiting on you. We'll notify you when a new request arrives."
-          />
+          <EmptyState title={copy.emptyQueueTitle} body={copy.emptyQueueBody} />
         )}
 
         {filter === "approved" && (
-          <DecidedList items={decided.filter((d) => d.outcome === "approved")} outcome="approved" />
+          <DecidedList
+            items={sessionDecisions.filter((d) => d.outcome === "approved")}
+            outcome="approved"
+          />
         )}
         {filter === "denied" && (
-          <DecidedList items={decided.filter((d) => d.outcome === "denied")} outcome="denied" />
+          <DecidedList
+            items={sessionDecisions.filter((d) => d.outcome === "denied")}
+            outcome="denied"
+          />
         )}
 
-        {/* Footer */}
-        <footer className="mt-16 text-xs italic text-zinc-400">
-          Manager actions are pessimistic by design. See ADR-004 ·
-          Optimism-to-Reversibility.
-        </footer>
+        <footer className="mt-16 text-xs italic text-zinc-400">{copy.footerNote}</footer>
       </main>
 
-      {conflict && (
-        <ConflictModal
-          request={conflict.request}
-          staleBalance={conflict.staleBalance}
-          liveBalance={conflict.liveBalance}
-          changeDetail="Maya K. approved Jordan L.'s Apr 29 request (1 day) · 2 min ago"
-          onApproveAnyway={() => commitApproval(conflict.request)}
-          onDeny={handleDeny}
-          onKeepPending={() => setConflict(null)}
-        />
-      )}
+      {conflictOpen &&
+        conflictRequest &&
+        conflictStale !== undefined &&
+        conflictLive !== undefined && (
+          <ConflictModal
+            request={conflictRequest}
+            staleBalance={conflictStale}
+            liveBalance={conflictLive}
+            changeDetail={copy.demoChangeDetail}
+            onApproveAnyway={handleApproveAnyway}
+            onDeny={handleDenyConflictRequest}
+            onKeepPending={closeConflictModal}
+          />
+        )}
     </div>
   );
 }
@@ -224,9 +323,7 @@ function FilterChip({
       onClick={onClick}
       className={
         "flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-colors " +
-        (active
-          ? "bg-[#0F0B1E] text-white"
-          : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100")
+        (active ? "bg-[#0F0B1E] text-white" : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100")
       }
     >
       <span className={"h-1.5 w-1.5 rounded-full " + dot} />
@@ -239,7 +336,17 @@ function EmptyState({ title, body }: { title: string; body: string }) {
   return (
     <div className="rounded-3xl bg-white border border-dashed border-zinc-300 p-16 text-center">
       <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#059669"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden
+        >
           <polyline points="4,12 10,18 20,6" />
         </svg>
       </div>
@@ -258,10 +365,7 @@ function DecidedList({
 }) {
   if (items.length === 0) {
     return (
-      <EmptyState
-        title={`No ${outcome} requests yet`}
-        body={`Decisions you've made will show up here.`}
-      />
+      <EmptyState title={copy.decidedEmptyTitle(outcome)} body={copy.decidedEmptyBody} />
     );
   }
   return (
@@ -276,7 +380,10 @@ function DecidedList({
             style={{ backgroundColor: req.employeeAvatarColor }}
           >
             <span className="text-xs font-bold text-violet-800">
-              {req.employeeName.split(" ").map((n) => n[0]).join("")}
+              {req.employeeName
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
             </span>
           </div>
           <div className="flex-1 min-w-0">

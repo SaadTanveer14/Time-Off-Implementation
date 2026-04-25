@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import type { PendingApproval } from "@/lib/types";
+import { conflictModal as copy } from "@/copy";
 
 interface ConflictModalProps {
   request: PendingApproval;
@@ -58,13 +59,13 @@ export function ConflictModal({
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[2px] text-rose-100">
-                Balance changed
+                {copy.eyebrow}
               </p>
               <h2
                 id="conflict-title"
                 className="mt-1 text-2xl font-bold tracking-tight text-white"
               >
-                Approve with current numbers?
+                {copy.title}
               </h2>
             </div>
           </div>
@@ -73,9 +74,7 @@ export function ConflictModal({
         {/* Body */}
         <div className="px-10 py-8">
           <p className="text-[15px] text-zinc-700 leading-relaxed">
-            {request.employeeName.split(" ")[0]}'s balance just updated in HCM —
-            another request was approved while this page was open. Please review
-            the new numbers before committing.
+            {copy.bodyIntro(request.employeeName.split(" ")[0])}
           </p>
 
           {/* Comparison */}
@@ -83,16 +82,16 @@ export function ConflictModal({
             {/* Was */}
             <div className="rounded-2xl bg-[#FAFAF7] border border-zinc-200 p-5">
               <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-zinc-400">
-                Was (2 min ago)
+                {copy.wasLabel}
               </p>
               <p className="mt-3 text-[64px] font-extrabold tabular-nums leading-none text-zinc-400 line-through">
                 {staleBalance}
               </p>
               <p className="mt-2 text-xs text-zinc-500">
-                Employee would have had
+                {copy.employeeWouldHave}
               </p>
               <p className="mt-1 text-base font-bold text-zinc-500">
-                {wasAfter} days after approval
+                {copy.daysAfterApproval(wasAfter)}
               </p>
             </div>
 
@@ -106,14 +105,14 @@ export function ConflictModal({
             {/* Now */}
             <div className="rounded-2xl bg-rose-50 border-2 border-rose-600 p-5 shadow-[0_8px_16px_rgba(220,38,38,0.25)]">
               <p className="text-[11px] font-bold uppercase tracking-[1.5px] text-rose-800">
-                Now (live)
+                {copy.nowLabel}
               </p>
               <p className="mt-3 text-[64px] font-extrabold tabular-nums leading-none text-rose-600">
                 {liveBalance}
               </p>
-              <p className="mt-2 text-xs text-rose-800">Request asks for</p>
+              <p className="mt-2 text-xs text-rose-800">{copy.requestAsksFor}</p>
               <p className="mt-1 text-base font-bold text-rose-800">
-                {request.days} days → {nowAfter} left
+                {copy.daysArrowLeft(request.days, nowAfter)}
               </p>
             </div>
           </div>
@@ -126,7 +125,7 @@ export function ConflictModal({
             </svg>
             <div>
               <p className="text-xs font-bold uppercase tracking-wide text-violet-800">
-                Change detail
+                {copy.changeDetailEyebrow}
               </p>
               <p className="mt-1 text-sm text-violet-900">{changeDetail}</p>
             </div>
@@ -139,9 +138,7 @@ export function ConflictModal({
                 <polyline points="3,11 7,15 16,3" />
               </svg>
               <p className="text-sm font-medium text-emerald-900">
-                Balance still covers the request — approval is safe to proceed,
-                but {request.employeeName.split(" ")[0]} will have fewer days
-                remaining.
+                {copy.stillSafeBody(request.employeeName.split(" ")[0])}
               </p>
             </div>
           )}
@@ -153,14 +150,14 @@ export function ConflictModal({
               onClick={onKeepPending}
               className="rounded-full border-[1.5px] border-zinc-200 bg-white px-6 py-3 text-sm font-semibold text-zinc-600 hover:bg-zinc-50"
             >
-              Keep pending
+              {copy.keepPending}
             </button>
             <button
               type="button"
               onClick={onDeny}
               className="rounded-full border-[1.5px] border-rose-600 bg-white px-6 py-3 text-sm font-semibold text-rose-600 hover:bg-rose-50"
             >
-              Deny instead
+              {copy.denyInstead}
             </button>
             <button
               type="button"
@@ -171,7 +168,7 @@ export function ConflictModal({
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden>
                 <polyline points="2,7 6,11 12,3" />
               </svg>
-              Approve with new balance
+              {copy.approveWithNewBalance}
             </button>
           </div>
         </div>
