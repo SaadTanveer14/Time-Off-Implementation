@@ -36,4 +36,40 @@ describe("RequestComposer", () => {
     expect(screen.getByRole("button", { name: /submitting/i })).toBeDisabled();
     expect(screen.getByRole("textbox")).toBeDisabled();
   });
+
+  it("blocks submit when date range overlaps an existing request", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+    renderWithProviders(
+      <RequestComposer
+        availableByLocation={{ "ny-hq": 10, remote: 4, sf: 8 }}
+        requests={[
+          {
+            id: "req_overlap",
+            employeeId: "emp_alex",
+            employeeName: "Alex Rivera",
+            locationId: "ny-hq",
+            locationName: "New York HQ",
+            startDate: "2026-05-04",
+            endDate: "2026-05-06",
+            days: 3,
+            status: "pending",
+            submittedAt: Date.now(),
+          },
+        ]}
+        onSubmit={onSubmit}
+      />,
+    );
+
+    await user.clear(screen.getByLabelText(/from/i));
+    await user.type(screen.getByLabelText(/from/i), "2026-05-05");
+    await user.clear(screen.getByLabelText(/to/i));
+    await user.type(screen.getByLabelText(/to/i), "2026-05-08");
+    const submit = screen.getByRole("button", { name: /submit request/i });
+    expect(submit).toBeDisabled();
+    expect(screen.getByText(/already have a request for these dates/i)).toBeInTheDocument();
+
+    await user.click(submit);
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
 });

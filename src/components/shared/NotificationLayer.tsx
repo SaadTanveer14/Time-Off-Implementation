@@ -56,7 +56,8 @@ export function NotificationLayer() {
           <p className="text-[10px] font-bold uppercase tracking-wide text-violet-700">{copy.driftEyebrow}</p>
           <p className="mt-1 font-medium">
             {d.locationName}: {d.delta > 0 ? "+" : ""}
-            {d.delta} ({d.category.replace(/_/g, " ")})
+            {d.delta}
+            {d.category !== "unknown" ? ` (${d.category.replace(/_/g, " ")})` : ""}
           </p>
           <button
             type="button"

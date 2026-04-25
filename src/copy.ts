@@ -91,6 +91,7 @@ export const composer = {
   sufficientChip: (left: number) => `Balance is sufficient · ${left} left`,
   shortBy: (n: number) =>
     `Short by ${n} day${n === 1 ? "" : "s"}`,
+  overlapConflict: "You already have a request for these dates.",
   locationAvailSuffix: "avail.",
   submit: "Submit request",
   submitting: "Submitting…",
@@ -127,9 +128,9 @@ export const toast = {
 export const manager = {
   pageEyebrow: "Manager · Approvals",
   allCaughtUp: "All caught up.",
-  denyDefaultReason: "Denied via manager console — coverage.",
+  denyDefaultReason: "Denied by manager",
   subtitle:
-    "Each action commits to HCM. The balance you see is read fresh just for you.",
+    "Each decision updates requests right away. The balance shown here is refreshed for you.",
   filterPending: "Pending",
   filterApproved: "Approved",
   filterDenied: "Denied",
@@ -141,8 +142,7 @@ export const manager = {
   decidedEmptyTitle: (outcome: "approved" | "denied") =>
     `No ${outcome} requests yet`,
   decidedEmptyBody: "Decisions you've made will show up here.",
-  footerNote:
-    "Manager actions are pessimistic by design. See ADR-004 · Optimism-to-Reversibility.",
+  footerNote: "Decisions update immediately and can be reviewed anytime in this session.",
   /** Demo-only narrative for conflict modal change detail. */
   demoChangeDetail:
     "Maya K. approved Jordan L.'s Apr 29 request (1 day) · 2 min ago",
@@ -186,9 +186,9 @@ export const approvalCard = {
       sufficient ? "✓ Sufficient" : "⚠ Would overdraw"
     }`,
   deny: "Deny",
-  approve: "Approve · commit",
-  committing: "Committing to HCM…",
-  approveHint: "Approve commits to HCM immediately. No undo.",
+  approve: "Approve",
+  committing: "Saving approval…",
+  approveHint: "Approving saves this decision right away.",
 } as const;
 
 // --- Queue sidebar ---
@@ -196,7 +196,7 @@ export const approvalCard = {
 export const queueSidebar = {
   title: "Next in queue",
   balanceLiveTitle: "Balance check is live",
-  balanceLiveBody: "Each card re-reads HCM when you focus it.",
+  balanceLiveBody: "Each card refreshes the latest balance when you open it.",
   availShort: (d: number) => `${d}d avail · short`,
   availOk: (d: number) => `${d}d avail.`,
 } as const;
@@ -207,7 +207,7 @@ export const conflictModal = {
   eyebrow: "Balance changed",
   title: "Approve with current numbers?",
   bodyIntro: (employeeFirstName: string) =>
-    `${employeeFirstName}'s balance just updated in HCM — another request was approved while this page was open. Please review the new numbers before committing.`,
+    `${employeeFirstName}'s balance was updated while this page was open. Another request was approved, so please review the latest numbers before deciding.`,
   wasLabel: "Was (2 min ago)",
   employeeWouldHave: "Employee would have had",
   daysAfterApproval: (n: number) => `${n} days after approval`,
