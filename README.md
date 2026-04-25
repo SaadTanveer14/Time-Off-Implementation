@@ -2,6 +2,11 @@
 
 Production-style Time-Off module built with Next.js, TanStack Query, Zustand, Zod, MSW, Storybook, Vitest, and Playwright.
 
+### Live Deployments
+
+- Storybook: [https://storybook-weld-six.vercel.app/](https://storybook-weld-six.vercel.app/)
+- Web App: [https://time-off-implementation.vercel.app/](https://time-off-implementation.vercel.app/)
+
 This README documents:
 - how to run the project locally
 - how to run each testing layer
