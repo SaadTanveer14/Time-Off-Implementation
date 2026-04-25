@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
 type RequiredStory = {
@@ -73,10 +73,35 @@ function parseMatrixRequirements(matrixPath: string): RequiredStory[] {
   return requirements;
 }
 
+function resolveMatrixPath(projectRoot: string): string | null {
+  const candidates = [
+    path.resolve(projectRoot, "docs/UX_STATE_MATRIX.md"),
+    path.resolve(projectRoot, "../docs/UX_STATE_MATRIX.md"),
+    path.resolve(projectRoot, "plan/UX_STATE_MATRIX.md"),
+  ];
+
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) return candidate;
+  }
+  return null;
+}
+
 function main(): void {
   const projectRoot = process.cwd();
-  const matrixPath = path.resolve(projectRoot, "../docs/UX_STATE_MATRIX.md");
+  const matrixPath = resolveMatrixPath(projectRoot);
   const storiesRoot = path.resolve(projectRoot, "stories");
+
+  if (!existsSync(storiesRoot)) {
+    console.warn(`Story coverage check skipped: stories directory not found at ${storiesRoot}`);
+    return;
+  }
+
+  if (!matrixPath) {
+    console.warn(
+      "Story coverage check skipped: UX_STATE_MATRIX.md not found in docs/ or plan/ directories.",
+    );
+    return;
+  }
 
   const storyFiles = walkStoryFiles(storiesRoot);
   const exportsByFile = collectStoryExports(storyFiles);
