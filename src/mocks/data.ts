@@ -1,10 +1,7 @@
-import type {
-  Balance,
-  Employee,
-  Location,
-  PendingApproval,
-  TimeOffRequest,
-} from "@/lib/types";
+import type { Balance, Employee, PendingApproval, TimeOffRequest } from "@/lib/types";
+import { locations } from "@/lib/locations";
+
+export { locations };
 
 // ----- Authenticated user (employee view) -----
 export const currentEmployee: Employee = {
@@ -25,13 +22,6 @@ export const currentManager: Employee = {
   primaryLocationId: "ny-hq",
   avatarColor: "#F59E0B",
 };
-
-// ----- Locations -----
-export const locations: Location[] = [
-  { id: "ny-hq", name: "New York HQ", shortName: "NY HQ" },
-  { id: "remote", name: "Remote", shortName: "Remote" },
-  { id: "sf", name: "San Francisco", shortName: "SF" },
-];
 
 // ----- Initial balances for the employee -----
 const now = Date.now();

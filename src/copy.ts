@@ -93,6 +93,7 @@ export const composer = {
     `Short by ${n} day${n === 1 ? "" : "s"}`,
   locationAvailSuffix: "avail.",
   submit: "Submit request",
+  submitting: "Submitting…",
   submitArrow: "→",
 } as const;
 
@@ -126,6 +127,7 @@ export const toast = {
 export const manager = {
   pageEyebrow: "Manager · Approvals",
   allCaughtUp: "All caught up.",
+  denyDefaultReason: "Denied via manager console — coverage.",
   subtitle:
     "Each action commits to HCM. The balance you see is read fresh just for you.",
   filterPending: "Pending",
@@ -141,9 +143,29 @@ export const manager = {
   decidedEmptyBody: "Decisions you've made will show up here.",
   footerNote:
     "Manager actions are pessimistic by design. See ADR-004 · Optimism-to-Reversibility.",
-  /** Demo-only narrative until conflict flow is store-driven (Phase 9). */
+  /** Demo-only narrative for conflict modal change detail. */
   demoChangeDetail:
     "Maya K. approved Jordan L.'s Apr 29 request (1 day) · 2 min ago",
+} as const;
+
+// --- Global shell (Phase 9) ---
+
+export const globalBanner = {
+  offline: "You're offline. Changes will not save until you reconnect.",
+  circuitOpen: "HCM is having trouble. Some features are temporarily disabled.",
+  yearStart: "New policy period — balances have been refreshed.",
+  dismissYearStart: "Dismiss",
+} as const;
+
+export const notificationLayer = {
+  driftEyebrow: "Sync update",
+  dismissToast: "Dismiss notification",
+  dismissDrift: "Dismiss",
+} as const;
+
+export const authGate = {
+  invalidTitle: "Sign-in required",
+  invalidBody: "Employee or manager context is missing. Check mock auth configuration.",
 } as const;
 
 // --- Approval card ---

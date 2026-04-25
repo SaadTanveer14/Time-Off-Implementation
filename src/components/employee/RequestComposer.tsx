@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import { cn, businessDays, formatDateRange } from "@/lib/utils";
 import type { LocationId } from "@/lib/types";
 import { composer as copy, daysLabel } from "@/copy";
-import { locations } from "@/mocks/data";
+import { locations } from "@/lib/locations";
 
 interface RequestComposerProps {
   /** Map of locationId -> available days */
   availableByLocation: Record<LocationId, number>;
+  submitting?: boolean;
   onSubmit: (req: {
     locationId: LocationId;
     startDate: string;
@@ -20,6 +21,7 @@ interface RequestComposerProps {
 
 export function RequestComposer({
   availableByLocation,
+  submitting = false,
   onSubmit,
 }: RequestComposerProps) {
   const [locationId, setLocationId] = useState<LocationId>("ny-hq");
@@ -36,7 +38,7 @@ export function RequestComposer({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!sufficient) return;
+    if (!sufficient || submitting) return;
     onSubmit({ locationId, startDate, endDate, days, note: note.trim() || undefined });
     setNote("");
   };
@@ -55,7 +57,7 @@ export function RequestComposer({
         </p>
       </header>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" aria-busy={submitting}>
         {/* Location */}
         <Field label={copy.fieldLocation}>
           <div className="grid grid-cols-3 gap-2">
@@ -65,6 +67,7 @@ export function RequestComposer({
                 <button
                   key={loc.id}
                   type="button"
+                  disabled={submitting}
                   onClick={() => setLocationId(loc.id)}
                   className={cn(
                     "rounded-2xl border-2 px-4 py-3 text-left transition-all",
@@ -101,17 +104,19 @@ export function RequestComposer({
             <input
               type="date"
               value={startDate}
+              disabled={submitting}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-[#0F0B1E] focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-[#0F0B1E] focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200 disabled:opacity-50"
             />
           </Field>
           <Field label={copy.fieldTo}>
             <input
               type="date"
               value={endDate}
+              disabled={submitting}
               onChange={(e) => setEndDate(e.target.value)}
               min={startDate}
-              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-[#0F0B1E] focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200"
+              className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm font-semibold text-[#0F0B1E] focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200 disabled:opacity-50"
             />
           </Field>
         </div>
@@ -140,26 +145,32 @@ export function RequestComposer({
         <Field label={copy.fieldNote}>
           <textarea
             value={note}
+            disabled={submitting}
             onChange={(e) => setNote(e.target.value)}
             placeholder={copy.notePlaceholder}
             rows={2}
-            className="w-full resize-none rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-[#0F0B1E] placeholder:text-zinc-400 focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200"
+            className="w-full resize-none rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm text-[#0F0B1E] placeholder:text-zinc-400 focus:border-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-200 disabled:opacity-50"
           />
         </Field>
 
         {/* Submit */}
         <button
           type="submit"
-          disabled={!sufficient}
+          disabled={!sufficient || submitting}
+          aria-busy={submitting}
           className={cn(
             "group relative flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-sm font-bold transition-all",
-            sufficient
+            sufficient && !submitting
               ? "bg-gradient-to-b from-violet-600 to-violet-800 text-white hover:translate-y-[-1px] hover:shadow-lg active:translate-y-0"
               : "bg-zinc-100 text-zinc-400 cursor-not-allowed",
           )}
         >
-          {copy.submit}
-          <span aria-hidden className="transition-transform group-hover:translate-x-0.5">{copy.submitArrow}</span>
+          {submitting ? copy.submitting : copy.submit}
+          {!submitting ? (
+            <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
+              {copy.submitArrow}
+            </span>
+          ) : null}
         </button>
       </form>
     </section>
